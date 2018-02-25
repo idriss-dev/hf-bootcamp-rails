@@ -62,11 +62,5 @@ RSpec.configure do |config|
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 
-  module Request
-    module JsonHelpers
-      def json_response
-        @json_response ||= JSON.parse(response.body, symbolize_names: true)
-      end
-    end
-  end
+  config.include Request::JsonHelpers, type: :request
 end
