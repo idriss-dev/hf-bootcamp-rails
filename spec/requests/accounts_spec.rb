@@ -2,10 +2,16 @@ require 'spec_helper'
 
 describe "Accounts" do
   describe "GET /accounts" do
-    it "works! (now write some real specs)" do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      get accounts_path
-      response.status.should be(200)
+    let!(:accounts) { FactoryBot.create_list(:accounts, 10) }
+
+    before { get :index }
+    it "returns HTTP status 200" do
+      expect(response).to have_http_status 200
+    end
+
+    it 'returns all accounts' do
+      body = JSON.parse(reponse.body)
+      expect(body['data'].size).to eq(10)
     end
   end
 end
