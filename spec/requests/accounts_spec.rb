@@ -4,7 +4,8 @@ describe "Accounts" do
   describe "GET #index" do
     let!(:accounts) { FactoryBot.create_list(:accounts, 10) }
 
-    before { get :index }
+    before { get :index, headers: auth_headers(current_user) }
+
     it "returns HTTP status 200" do
       expect(response).to have_http_status 200
     end
@@ -14,9 +15,7 @@ describe "Accounts" do
       expect(['data'].size).to eq(10)
     end
 
-    it 'returns the requested account' do
-        expect(json_response[:data][:attributes][:email]).to eq('kakashi@text.com')
-    end
+    it { should respond_with 200 }
   end
 
   describe "GET #show" do

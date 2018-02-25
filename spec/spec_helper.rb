@@ -68,4 +68,5 @@ RSpec.configure do |config|
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 
   config.include(Request::JsonHelpers, type: :request)
+  config.include(Request::AuthHelpers, type: :request)
 end
