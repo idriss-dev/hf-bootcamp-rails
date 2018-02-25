@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-  before_action :authenticate_user
   before_action :set_account, only: [:show, :update, :destroy]
 
   # GET /accounts
