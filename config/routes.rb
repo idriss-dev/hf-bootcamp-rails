@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :admins
   resources :users
 
-  post 'user_token' => 'account_token#create'
+  post 'signin' => 'account_token#create'
 
   # TO DO list of ressources of the project Objectives, Organizations, Departments
 end
