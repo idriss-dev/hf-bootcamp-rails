@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :objectives
+  resources :accounts
 
   post 'signin' => 'account_token#create'
 

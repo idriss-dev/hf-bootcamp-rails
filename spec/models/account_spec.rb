@@ -9,6 +9,8 @@ describe Account do
 
   subject { @account }
 
+  it { should respond_to(:is_admin) }
+  it { should respond_to(:full_name) }
   it { should respond_to(:email) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
