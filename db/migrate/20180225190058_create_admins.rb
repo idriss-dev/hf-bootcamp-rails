@@ -3,6 +3,8 @@ class CreateAdmins < ActiveRecord::Migration[5.1]
     create_table :admins do |t|
       t.string :username
 
+      t.has_one :account
+
       t.timestamps
     end
   end
