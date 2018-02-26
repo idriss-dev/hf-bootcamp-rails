@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   post 'signin' => 'account_token#create'
 
-  # TO DO list of ressources of the project Objectives, Organizations, Departments
+  # TO DO Organizations, Departments
 end
