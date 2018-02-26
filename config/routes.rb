@@ -1,3 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :objectives
+  resources :admins
+  resources :users
+
+  post 'signin' => 'account_token#create'
+
+  # TO DO list of ressources of the project Objectives, Organizations, Departments
 end
