@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :admin do
-    username FFaker::InternetSE.login_user_name
+    username FFaker::Name.name
     account
   end
 end
