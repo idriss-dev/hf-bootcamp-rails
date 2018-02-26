@@ -10,7 +10,7 @@ RSpec.describe Admin, type: :model do
 
   it { should respond_to(:username) }
 
-  it { should has_one(:account) }
+  it { should have_one(:account) }
 
   it { should be_valid }
 end

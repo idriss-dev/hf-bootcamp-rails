@@ -1,3 +1,3 @@
 class Admin < ApplicationRecord
-  belongs_to :account
+  has_one :account
 end

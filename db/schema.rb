@@ -17,12 +17,15 @@ ActiveRecord::Schema.define(version: 20180225190922) do
     t.string "password"
     t.string "password_confirmation"
     t.string "password_digest"
+    t.integer "admin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_accounts_on_admin_id"
   end
 
   create_table "admins", force: :cascade do |t|
     t.string "username"
+    t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

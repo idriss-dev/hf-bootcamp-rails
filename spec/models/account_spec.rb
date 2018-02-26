@@ -23,7 +23,6 @@ describe Account do
   it { should allow_value('example@domain.com').for(:email) }
   it { should validate_confirmation_of(:password) }
 
-  it { should belong_to(:admin) }
 
   it { should be_valid }
 end
