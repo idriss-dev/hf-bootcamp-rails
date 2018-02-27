@@ -16,9 +16,10 @@ class AccountsController < ApplicationController
   # POST /accounts
   def create
     @account = Account.new(account_params)
+    token = Knock::AuthToken.new(payload: { sub: @account.id }).token
 
     if @account.save
-      render json: @account, status: :created, location: @account
+      render json: { jwt: token, account: @account}, status: :created, location: @account
     else
       render json: @account.errors, status: :unprocessable_entity
     end
@@ -46,6 +47,6 @@ class AccountsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def account_params
-      params.require(:account).permit(:email, :password, :password_confirmation)
+      params.require(:account).permit(:email, :password, :password_confirmation, :is_admin, :full_name)
     end
 end
