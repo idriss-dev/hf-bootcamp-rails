@@ -20,11 +20,10 @@ describe AccountsController do
     end
 
     context "with invalid params" do
-      it "renders a JSON response with errors for the new objective" do
-
-        post :create, params: {account: invalid_attributes}
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+      it "does not create a new Account" do
+        expect {
+          post :create, params: {account: invalid_attributes}
+        }.to change(Account, :count).by(0)
       end
     end
   end
