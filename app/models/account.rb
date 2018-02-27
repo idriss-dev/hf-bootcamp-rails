@@ -9,4 +9,6 @@ class Account < ApplicationRecord
   validates_uniqueness_of   :email
 
   validates_length_of :is_admin, allow_nil: false, allow_blank: false
+
+  # TO DO: Adds Callback for sending invitation email to users
 end

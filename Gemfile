@@ -6,12 +6,14 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 5.1.5'
-gem 'sqlite3'
+gem 'pg'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'knock'
+gem 'multi_json', '~> 1.13.1'
+gem 'oj', '~> 3.4.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -19,6 +21,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem 'ffaker'
   gem 'shoulda-matchers', '~> 3.1'
+  gem 'pry-rails'
 end
 
 group :development do
