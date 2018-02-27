@@ -22,6 +22,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'pry-rails'
+  gem 'email_spec', '~> 2.1.1'
 end
 
 group :development do
