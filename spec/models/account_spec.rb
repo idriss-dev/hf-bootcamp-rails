@@ -17,6 +17,7 @@ describe Account do
   it { should respond_to(:password_digest) }
 
   it { should validate_presence_of(:email) }
+  it { should validate_presence_of(:full_name) }
   it { should validate_uniqueness_of(:email) }
 
   it { should validate_length_of(:password).is_at_most(72) }
@@ -26,7 +27,6 @@ describe Account do
   it { should validate_confirmation_of(:password) }
 
   it { should_not allow_value(nil).for(:is_admin) }
-  it { should_not allow_value(nil).for(:full_name) }
 
   it { should be_valid }
 end
