@@ -25,6 +25,8 @@ describe Account do
   it { should allow_value('example@domain.com').for(:email) }
   it { should validate_confirmation_of(:password) }
 
+  it { should_not allow_value(nil).for(:is_admin) }
+  it { should_not allow_value(nil).for(:full_name) }
 
   it { should be_valid }
 end
