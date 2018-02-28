@@ -13,7 +13,22 @@ class AccountsController < ApplicationController
     render json: @account
   end
 
-  # POST /accounts
+=begin
+       @api {post} /accounts Creates a company account
+       @apiName CreateAccount
+       @apiGroup Account
+
+       @apiParam {String} email Email of the user
+       @apiParam {String} password Password of the user
+       @apiParam {String} password_confirmation Password confirmation
+       @apiParam {String} full_name Full name of the user
+
+       @apiSuccess (200) {String} jwt the Json Web Token of the user
+       @apiSuccess (200) {Object} User saved data
+
+       @apiError (422) {Object} User Save Error
+=end
+
   def create
     @account = Account.new(account_params)
     token = Knock::AuthToken.new(payload: { sub: @account.id }).token
@@ -38,6 +53,19 @@ class AccountsController < ApplicationController
   def destroy
     @account.destroy
   end
+
+=begin
+       @api {post} /accounts/invite invites a user
+       @apiName InviteAccount
+       @apiGroup Account
+
+       @apiParam {String} email Email of the user
+
+       @apiSuccess (200)  {String} success message
+
+       @apiError (422) {Object} User Save Error
+=end
+
 
   def invite
     new_account = invite_params
