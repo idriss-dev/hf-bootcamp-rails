@@ -12,6 +12,14 @@ describe "Accounts", type: :request do
     }
   }
 
+  let(:valid_invited_user) {
+    { email: FFaker::Internet.email }
+  }
+
+  let(:invalid_invited_user) {
+    { email: FFaker::Name.name }
+  }
+
   describe "POST #create" do
     context "with valid params" do
       before(:each) do
@@ -42,4 +50,26 @@ describe "Accounts", type: :request do
       it { expect(response).to have_http_status(:unprocessable_entity) }
     end
   end
+
+  describe "POST #invite" do
+    context "with valid params" do
+      before(:each) do
+        post user_invite_path(accounts_path), params: { account: valid_invited_user }
+      end
+
+      it { expect(response).to have_http_status(:created) }
+    end
+
+    context "with invalid params" do
+
+      before(:each) do
+        post user_invite_path(accounts_path), params: { account: invalid_invited_user }
+      end
+
+      it "renders the json errors on why the Invitation could not be created" do
+        expect(json_response[:email]).to include "can't be blank"
+      end
+    end
+  end
+
 end

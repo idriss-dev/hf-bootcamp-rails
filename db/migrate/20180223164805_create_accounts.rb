@@ -5,7 +5,7 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
       t.string :password
       t.string :password_confirmation
       t.string :password_digest
-      t.boolean :is_admin, :default => false
+      t.boolean :is_admin
       t.string :full_name
       t.timestamps
     end
