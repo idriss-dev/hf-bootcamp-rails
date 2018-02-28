@@ -16,9 +16,10 @@ class AccountsController < ApplicationController
   # POST /accounts
   def create
     @account = Account.new(account_params)
+    token = Knock::AuthToken.new(payload: { sub: @account.id }).token
 
     if @account.save
-      render json: @account, status: :created, location: @account
+      render json: { jwt: token, account: @account}, status: :created, location: @account
     else
       render json: @account.errors, status: :unprocessable_entity
     end
@@ -38,14 +39,30 @@ class AccountsController < ApplicationController
     @account.destroy
   end
 
+  def invite
+    new_account = invite_params
+    new_account[:is_invited] = true
+    @account = Account.new(new_account)
+
+    if @account.save
+      render json: { msg: "invitation sent" }, status: :created, location: @account
+    else
+      render json: @account.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_account
       @account = Account.find(params[:id])
     end
 
+    def invite_params
+      params.require(:account).permit(:email)
+    end
+
     # Only allow a trusted parameter "white list" through.
     def account_params
-      params.require(:account).permit(:email, :password, :password_confirmation)
+      params.require(:account).permit(:email, :password, :password_confirmation, :is_admin, :full_name)
     end
 end

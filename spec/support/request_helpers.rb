@@ -13,4 +13,10 @@ module Request
       }
     end
   end
+
+  module AccountHelpers
+    def user_invite_path(accounts_path)
+      accounts_path + '/invite'
+    end
+  end
 end
