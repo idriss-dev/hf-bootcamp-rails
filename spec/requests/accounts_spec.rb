@@ -21,13 +21,18 @@ describe "Accounts", type: :request do
   }
 
   let(:admin_account) {
-    FactoryBot.create(:account)
+    FactoryBot.create :account
   }
 
-  describe "POST #create" do
+  let(:user_account) {
+    FactoryBot.create :account, :not_admin
+  }
+
+  describe "POST #signup" do
     context "with valid params" do
       before(:each) do
-        post user_signup_path(accounts_path), params: { account: valid_attributes }
+        post user_signup_path(accounts_path),
+             params: { account: valid_attributes }
       end
 
       it "should return the JWT token" do
@@ -44,7 +49,8 @@ describe "Accounts", type: :request do
 
     context "with invalid params" do
       before(:each) do
-        post user_signup_path(accounts_path), params: { account: invalid_attributes }
+        post user_signup_path(accounts_path),
+             params: { account: invalid_attributes }
       end
 
       it "renders the json errors on why the Account could not be created" do
@@ -58,8 +64,9 @@ describe "Accounts", type: :request do
   describe "POST #invite" do
     context "with valid params" do
       before(:each) do
-        #binding.pry
-        post user_invite_path(accounts_path), headers: auth_headers(admin_account.id), params: { account: valid_invited_user }
+        post user_invite_path(accounts_path),
+             headers: auth_headers(admin_account.id),
+             params: { account: valid_invited_user }
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -68,23 +75,38 @@ describe "Accounts", type: :request do
     context "with invalid params" do
 
       before(:each) do
-        post user_invite_path(accounts_path), headers: auth_headers(admin_account.id), params: { account: invalid_invited_user }
+        post user_invite_path(accounts_path),
+             headers: auth_headers(admin_account.id),
+             params: { account: invalid_invited_user }
       end
 
-      it "renders the json errors on why the Invitation could not be created" do
-        expect(json_response[:email]).to include "can't be blank"
-      end
+      it { expect(response).to have_http_status(:unprocessable_entity) }
     end
 
-    context "with unauth user" do
+    context "with unauthenticated user" do
 
       before(:each) do
-        post user_invite_path(accounts_path), params: { account: invalid_invited_user }
+        post user_invite_path(accounts_path),
+             params: { account: invalid_invited_user }
+      end
+
+      it { expect(response).to have_http_status(:unauthorized) }
+    end
+
+    context "with non admin user" do
+
+      before(:each) do
+        #binding.pry
+        post user_invite_path(accounts_path),
+             headers: auth_headers(user_account.id),
+             params: { account: valid_invited_user }
       end
 
       it "renders the json errors on why the Invitation could not be created" do
-        expect(json_response[:email]).to include "can't be blank"
+        expect(json_response[:msg]).to include "only admins can send invitations"
       end
+
+      it { expect(response).to have_http_status(:unauthorized) }
     end
   end
 end

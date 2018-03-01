@@ -2,7 +2,6 @@ class AccountsController < ApplicationController
   before_action :authenticate_account, :only => [:invite]
   before_action :set_account, only: [:show, :update, :destroy]
 
-
   # GET /accounts
   def index
     @accounts = Account.all
@@ -72,8 +71,7 @@ class AccountsController < ApplicationController
 
   def invite
     # FIXME: Verify if the admin is the one using this api
-    binding.pry
-    if current_account.is_admin?
+    if current_account.is_admin
       new_account = invite_params
       new_account[:is_invited] = true
       @account = Account.new(new_account)

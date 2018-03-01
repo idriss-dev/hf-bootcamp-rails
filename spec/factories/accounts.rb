@@ -6,5 +6,10 @@ FactoryBot.define do
     is_admin true
     is_invited false
     full_name { FFaker::Name.name }
+
+    trait :not_admin do
+      is_admin false
+    end
   end
+
 end
