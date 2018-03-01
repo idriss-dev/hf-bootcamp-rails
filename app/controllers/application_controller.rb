@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
 
 =begin
-       @api {post} /signin signin a user
+       @api {post} accounts/signin signin a user
        @apiName SigninAccount
        @apiGroup Account
 

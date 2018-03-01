@@ -30,8 +30,8 @@ describe Account do
   it { should_not allow_value(nil).for(:is_admin) }
   it { should_not allow_value(nil).for(:is_invited) }
 
-  it { should callback(:set_user).before(:validation) }
-  it { should callback(:send_user_invitation).after(:validation) }
+  it { should_not callback(:set_user).before(:validation).unless(:is_invited?) }
+  it { should_not callback(:send_user_invitation).after(:validation).unless(:is_invited?) }
 
   it { should be_valid }
 end

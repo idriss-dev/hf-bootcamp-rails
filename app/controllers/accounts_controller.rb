@@ -1,5 +1,7 @@
 class AccountsController < ApplicationController
+  before_action :authenticate_account, :only => [:invite]
   before_action :set_account, only: [:show, :update, :destroy]
+
 
   # GET /accounts
   def index
@@ -14,8 +16,8 @@ class AccountsController < ApplicationController
   end
 
 =begin
-       @api {post} /accounts Creates a company account
-       @apiName CreateAccount
+       @api {post} /accounts/signup Creates a company account
+       @apiName SignAccount
        @apiGroup Account
 
        @apiParam {String} email Email of the user
@@ -28,12 +30,12 @@ class AccountsController < ApplicationController
 
        @apiError (422) {Object} User Save Error
 =end
-
-  def create
+# TODO sets Admin true by default
+  def signup
     @account = Account.new(account_params)
     token = Knock::AuthToken.new(payload: { sub: @account.id }).token
-
     if @account.save
+    # TODO: this response should return only needed user data
       render json: { jwt: token, account: @account}, status: :created, location: @account
     else
       render json: @account.errors, status: :unprocessable_entity
@@ -54,6 +56,8 @@ class AccountsController < ApplicationController
     @account.destroy
   end
 
+#TODO include the header for auth with jwt
+
 =begin
        @api {post} /accounts/invite invites a user
        @apiName InviteAccount
@@ -66,31 +70,38 @@ class AccountsController < ApplicationController
        @apiError (422) {Object} User Save Error
 =end
 
-
   def invite
-    new_account = invite_params
-    new_account[:is_invited] = true
-    @account = Account.new(new_account)
+    # FIXME: Verify if the admin is the one using this api
+    binding.pry
+    if current_account.is_admin?
+      new_account = invite_params
+      new_account[:is_invited] = true
+      @account = Account.new(new_account)
 
-    if @account.save
-      render json: { msg: "invitation sent" }, status: :created, location: @account
+      if @account.save
+        # NOTE: it would be better to have custom messages placed in a special folder
+        render json: { msg: "invitation sent" }, status: :created, location: @account
+      else
+        render json: @account.errors, status: :unprocessable_entity
+      end
     else
-      render json: @account.errors, status: :unprocessable_entity
+        render json: { msg: "only admins can send invitations" }, status: :unauthorized
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_account
-      @account = Account.find(params[:id])
-    end
 
-    def invite_params
-      params.require(:account).permit(:email)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_account
+    @account = Account.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def account_params
-      params.require(:account).permit(:email, :password, :password_confirmation, :is_admin, :full_name)
-    end
+  def invite_params
+    params.require(:account).permit(:email)
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def account_params
+    params.require(:account).permit(:email, :password, :password_confirmation, :is_admin, :full_name)
+  end
 end

@@ -22,6 +22,10 @@ class Account < ApplicationRecord
     is_invited
   end
 
+  def is_admin?
+    is_admin
+  end
+
   def set_user
     self.password = (0...8).map { (65 + rand(26)).chr }.join
     self.password_confirmation = self.password

@@ -20,10 +20,14 @@ describe "Accounts", type: :request do
     { email: FFaker::Name.name }
   }
 
+  let(:admin_account) {
+    FactoryBot.create(:account)
+  }
+
   describe "POST #create" do
     context "with valid params" do
       before(:each) do
-        post accounts_path, params: { account: valid_attributes }
+        post user_signup_path(accounts_path), params: { account: valid_attributes }
       end
 
       it "should return the JWT token" do
@@ -40,7 +44,7 @@ describe "Accounts", type: :request do
 
     context "with invalid params" do
       before(:each) do
-        post accounts_path, params: { account: invalid_attributes }
+        post user_signup_path(accounts_path), params: { account: invalid_attributes }
       end
 
       it "renders the json errors on why the Account could not be created" do
@@ -54,13 +58,25 @@ describe "Accounts", type: :request do
   describe "POST #invite" do
     context "with valid params" do
       before(:each) do
-        post user_invite_path(accounts_path), params: { account: valid_invited_user }
+        #binding.pry
+        post user_invite_path(accounts_path), headers: auth_headers(admin_account.id), params: { account: valid_invited_user }
       end
 
       it { expect(response).to have_http_status(:created) }
     end
 
     context "with invalid params" do
+
+      before(:each) do
+        post user_invite_path(accounts_path), headers: auth_headers(admin_account.id), params: { account: invalid_invited_user }
+      end
+
+      it "renders the json errors on why the Invitation could not be created" do
+        expect(json_response[:email]).to include "can't be blank"
+      end
+    end
+
+    context "with unauth user" do
 
       before(:each) do
         post user_invite_path(accounts_path), params: { account: invalid_invited_user }
@@ -71,5 +87,4 @@ describe "Accounts", type: :request do
       end
     end
   end
-
 end

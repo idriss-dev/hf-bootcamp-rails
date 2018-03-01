@@ -6,8 +6,8 @@ module Request
   end
 
   module AuthHelpers
-    def auth_headers(user)
-      token = Knock::AuthToken.new(payload: { sub: user.id }).token
+    def auth_headers(account_id)
+      token = Knock::AuthToken.new(payload: { sub: account_id }).token
       {
         'Authorization': "Bearer #{token}"
       }
@@ -17,6 +17,10 @@ module Request
   module AccountHelpers
     def user_invite_path(accounts_path)
       accounts_path + '/invite'
+    end
+
+    def user_signup_path(accounts_path)
+      accounts_path + '/signup'
     end
   end
 end
