@@ -19,10 +19,12 @@ class AccountsController < ApplicationController
        @apiName SignAccount
        @apiGroup Account
 
-       @apiParam {String} email Email of the user
-       @apiParam {String} password Password of the user
-       @apiParam {String} password_confirmation Password confirmation
-       @apiParam {String} full_name Full name of the user
+       @apiParam {String} data.email Email of the user
+       @apiParam {String} data.password Password of the user
+       @apiParam {String} data.password_confirmation Password confirmation
+       @apiParam {String} data.full_name Full name of the user
+
+       @apiParam {String} meta.jwt the jwt auth token
 
        @apiSuccess (200) {String} jwt the Json Web Token of the user
        @apiSuccess (200) {Object} User saved data
@@ -34,12 +36,10 @@ class AccountsController < ApplicationController
     new_admin[:is_admin] = true
     @account = Account.new(new_admin)
 
-    token = Knock::AuthToken.new(payload: { sub: @account.id }).token
+    jwt_token = Knock::AuthToken.new(payload: { sub: @account.id }).token
 
     if @account.save
-      #binding.pry
-    # TODO: this response should return only needed user data
-      render json: { jwt: token, account: @account}, status: :created, location: @account
+      render json: @account, meta: { jwt: jwt_token }, status: :created, location: @account
     else
       render json: @account.errors, status: :unprocessable_entity
     end
@@ -64,11 +64,11 @@ class AccountsController < ApplicationController
        @apiName InviteAccount
        @apiGroup Account
 
-       @apiHeader {String} Authorization='Bearer :jwt-token:'
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
 
-       @apiParam {String} email Email of the user
+       @apiParam {String} data.email Email of the user
 
-       @apiSuccess (200)  {Object} msg invitation sent
+       @apiSuccess (200)  {Object} data.msg invitation sent
 
        @apiError (422) {Object} ModelAttr error message
        @apiError (401) {Object} User only admins can send invitations
@@ -82,12 +82,12 @@ class AccountsController < ApplicationController
 
       if @account.save
         # NOTE: it would be better to have custom messages placed in a special folder
-        render json: { msg: "invitation sent" }, status: :created, location: @account
+        render json: { data: { msg: "invitation sent" }}, status: :created, location: @account
       else
         render json: @account.errors, status: :unprocessable_entity
       end
     else
-        render json: { msg: "only admins can send invitations" }, status: :unauthorized
+        render json: { data: { msg: "only admins can send invitations" }}, status: :unauthorized
     end
   end
 

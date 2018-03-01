@@ -36,13 +36,37 @@ describe "Accounts", type: :request do
       end
 
       it "should return the JWT token" do
-        expect(json_response[:jwt]).not_to eql :nil
+        expect(json_response[:meta][:jwt]).not_to eql :nil
       end
 
       it "should return the account" do
-        account_response = json_response[:account]
-        binding.pry
+        account_response = json_response[:data][:attributes]
         expect(account_response[:email]).to eql valid_attributes[:email]
+      end
+
+      it "should not have password in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:password)
+      end
+
+      it "should not have password_confirmation in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:password_confirmation)
+      end
+
+      it "should not have password_digest in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:password_digest)
+      end
+
+      it "should not have is_admin in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:is_admin)
+      end
+
+      it "should not have is_invited in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:is_invited)
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -97,14 +121,13 @@ describe "Accounts", type: :request do
     context "with non admin user" do
 
       before(:each) do
-        #binding.pry
         post user_invite_path(accounts_path),
              headers: auth_headers(user_account.id),
              params: { account: valid_invited_user }
       end
 
       it "renders the json errors on why the Invitation could not be created" do
-        expect(json_response[:msg]).to include "only admins can send invitations"
+        expect(json_response[:data][:msg]).to include "only admins can send invitations"
       end
 
       it { expect(response).to have_http_status(:unauthorized) }

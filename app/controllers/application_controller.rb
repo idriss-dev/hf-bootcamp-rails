@@ -22,4 +22,7 @@ class ApplicationController < ActionController::API
 
 
   include Knock::Authenticable
+
+  ActiveModelSerializers.config.adapter = :json_api
+
 end
