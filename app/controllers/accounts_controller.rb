@@ -29,11 +29,15 @@ class AccountsController < ApplicationController
 
        @apiError (422) {Object} User Save Error
 =end
-# TODO sets Admin true by default
   def signup
-    @account = Account.new(account_params)
+    new_admin = account_params
+    new_admin[:is_admin] = true
+    @account = Account.new(new_admin)
+
     token = Knock::AuthToken.new(payload: { sub: @account.id }).token
+
     if @account.save
+      #binding.pry
     # TODO: this response should return only needed user data
       render json: { jwt: token, account: @account}, status: :created, location: @account
     else
@@ -55,22 +59,22 @@ class AccountsController < ApplicationController
     @account.destroy
   end
 
-#TODO include the header for auth with jwt
-
 =begin
        @api {post} /accounts/invite invites a user
        @apiName InviteAccount
        @apiGroup Account
 
+       @apiHeader {String} Authorization='Bearer :jwt-token:'
+
        @apiParam {String} email Email of the user
 
-       @apiSuccess (200)  {String} success message
+       @apiSuccess (200)  {Object} msg invitation sent
 
-       @apiError (422) {Object} User Save Error
+       @apiError (422) {Object} ModelAttr error message
+       @apiError (401) {Object} User only admins can send invitations
 =end
 
   def invite
-    # FIXME: Verify if the admin is the one using this api
     if current_account.is_admin
       new_account = invite_params
       new_account[:is_invited] = true

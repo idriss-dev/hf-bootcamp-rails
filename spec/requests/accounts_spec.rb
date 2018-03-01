@@ -41,6 +41,7 @@ describe "Accounts", type: :request do
 
       it "should return the account" do
         account_response = json_response[:account]
+        binding.pry
         expect(account_response[:email]).to eql valid_attributes[:email]
       end
 
