@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  # TODO Signin should return user information and jwt in the same format as signup
   before_action :authenticate_account, :only => [:invite]
   before_action :set_account, only: [:show, :update, :destroy]
 

@@ -22,5 +22,9 @@ module Request
     def user_signup_path(accounts_path)
       accounts_path + '/signup'
     end
+
+    def user_signin_path(accounts_path)
+      accounts_path + '/signin'
+    end
   end
 end
