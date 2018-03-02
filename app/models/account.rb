@@ -6,7 +6,7 @@ class Account < ApplicationRecord
 
   validates_presence_of     :email
   validates_uniqueness_of   :email
-  validates :email, format: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
   validates_presence_of     :full_name
 
@@ -20,6 +20,10 @@ class Account < ApplicationRecord
 
   def is_invited?
     is_invited
+  end
+
+  def is_admin?
+    is_admin
   end
 
   def set_user

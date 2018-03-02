@@ -20,19 +20,53 @@ describe "Accounts", type: :request do
     { email: FFaker::Name.name }
   }
 
-  describe "POST #create" do
+  let(:admin_account) {
+    FactoryBot.create :account
+  }
+
+  let(:user_account) {
+    FactoryBot.create :account, :not_admin
+  }
+
+  describe "POST #signup" do
     context "with valid params" do
       before(:each) do
-        post accounts_path, params: { account: valid_attributes }
+        post user_signup_path(accounts_path),
+             params: { account: valid_attributes }
       end
 
       it "should return the JWT token" do
-        expect(json_response[:jwt]).not_to eql :nil
+        expect(json_response[:meta][:jwt]).not_to eql :nil
       end
 
       it "should return the account" do
-        account_response = json_response[:account]
+        account_response = json_response[:data][:attributes]
         expect(account_response[:email]).to eql valid_attributes[:email]
+      end
+
+      it "should not have password in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:password)
+      end
+
+      it "should not have password_confirmation in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:password_confirmation)
+      end
+
+      it "should not have password_digest in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:password_digest)
+      end
+
+      it "should not have is_admin in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:is_admin)
+      end
+
+      it "should not have is_invited in the account response" do
+        account_response = json_response[:data][:attributes]
+        expect(account_response).to_not include(:is_invited)
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -40,7 +74,8 @@ describe "Accounts", type: :request do
 
     context "with invalid params" do
       before(:each) do
-        post accounts_path, params: { account: invalid_attributes }
+        post user_signup_path(accounts_path),
+             params: { account: invalid_attributes }
       end
 
       it "renders the json errors on why the Account could not be created" do
@@ -54,7 +89,9 @@ describe "Accounts", type: :request do
   describe "POST #invite" do
     context "with valid params" do
       before(:each) do
-        post user_invite_path(accounts_path), params: { account: valid_invited_user }
+        post user_invite_path(accounts_path),
+             headers: auth_headers(admin_account.id),
+             params: { account: valid_invited_user }
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -63,13 +100,37 @@ describe "Accounts", type: :request do
     context "with invalid params" do
 
       before(:each) do
-        post user_invite_path(accounts_path), params: { account: invalid_invited_user }
+        post user_invite_path(accounts_path),
+             headers: auth_headers(admin_account.id),
+             params: { account: invalid_invited_user }
+      end
+
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+    end
+
+    context "with unauthenticated user" do
+
+      before(:each) do
+        post user_invite_path(accounts_path),
+             params: { account: invalid_invited_user }
+      end
+
+      it { expect(response).to have_http_status(:unauthorized) }
+    end
+
+    context "with non admin user" do
+
+      before(:each) do
+        post user_invite_path(accounts_path),
+             headers: auth_headers(user_account.id),
+             params: { account: valid_invited_user }
       end
 
       it "renders the json errors on why the Invitation could not be created" do
-        expect(json_response[:email]).to include "can't be blank"
+        expect(json_response[:data][:msg]).to include "only admins can send invitations"
       end
+
+      it { expect(response).to have_http_status(:unauthorized) }
     end
   end
-
 end

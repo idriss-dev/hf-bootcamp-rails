@@ -1,3 +1,5 @@
 class AccountSerializer < ActiveModel::Serializer
-  attributes :id, :email, :password, :password_confirmation
+  attributes :id, :email, :full_name
+
+  #has_one :jwt
 end

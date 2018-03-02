@@ -1,24 +1,12 @@
-# README
+# API DOC 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+We are using [apidoc](http://apidocjs.com) to generate the documentation
+for this application.
 
-Things you may want to cover:
+To generate the api documentation, please install `npm install apidoc
+-g` and run `apidoc -i ./ -o apidoc/`. A newly generated folder `/apidoc`
+would be generated to illustrate the api
 
-* Ruby version
+open the api through `/apidoc/index.html` in your browser
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+cheers, and have a :coffee: for the read

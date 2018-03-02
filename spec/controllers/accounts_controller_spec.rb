@@ -18,11 +18,15 @@ describe AccountsController do
     { email: FFaker::Name.name }
   }
 
-  describe "POST #create" do
+  let(:admin_account) {
+    FactoryBot.create :account
+  }
+
+  describe "POST #signup" do
     context "with valid params" do
       it "creates a new Account" do
         expect {
-          post :create, params: {account: valid_attributes}
+          post :signup, params: {account: valid_attributes}
         }.to change(Account, :count).by(1)
       end
     end
@@ -30,7 +34,7 @@ describe AccountsController do
     context "with invalid params" do
       it "does not create a new Account" do
         expect {
-          post :create, params: {account: invalid_attributes}
+          post :signup, params: {account: invalid_attributes}
         }.to change(Account, :count).by(0)
       end
     end
@@ -39,8 +43,10 @@ describe AccountsController do
   describe "POST #invite" do
     context "with valid params" do
       it "creates a new Account for the invited user" do
+        request.headers.merge!(auth_headers(admin_account.id))
         expect {
-          post :invite, params: { account: valid_invited_user }
+          post :invite,
+               params: { account: valid_invited_user }
         }.to change(Account, :count).by(1)
       end
     end
@@ -48,7 +54,8 @@ describe AccountsController do
     context "with invalid params" do
       it "does not create a new Account" do
         expect {
-          post :invite, params: { account: invalid_invited_user }
+          post :invite,
+               params: { account: invalid_invited_user }
         }.to change(Account, :count).by(0)
       end
     end

@@ -19,19 +19,22 @@ describe Account do
 
   it { should validate_presence_of(:email) }
   it { should validate_presence_of(:full_name) }
+
   it { should validate_uniqueness_of(:email) }
 
   it { should validate_length_of(:password).is_at_most(72) }
   it { should validate_length_of(:password).is_at_least(8) }
 
-  it { should allow_value('example@domain.com').for(:email) }
   it { should validate_confirmation_of(:password) }
+
+  it { should allow_value('example@domain.com').for(:email) }
+  it { should_not allow_value('example domain').for(:email) }
 
   it { should_not allow_value(nil).for(:is_admin) }
   it { should_not allow_value(nil).for(:is_invited) }
 
-  it { should callback(:set_user).before(:validation) }
-  it { should callback(:send_user_invitation).after(:validation) }
+  it { should_not callback(:set_user).before(:validation).unless(:is_invited?) }
+  it { should_not callback(:send_user_invitation).after(:validation).unless(:is_invited?) }
 
   it { should be_valid }
 end
