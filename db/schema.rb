@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180302102953) do
+ActiveRecord::Schema.define(version: 20180302103543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20180302102953) do
     t.string "name"
     t.string "description"
     t.date "due_date"
-    t.integer "department_id"
     t.integer "status"
     t.decimal "progress"
     t.string "milestones"
@@ -45,6 +44,7 @@ ActiveRecord::Schema.define(version: 20180302102953) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id"
+    t.bigint "department_id"
     t.index ["account_id"], name: "index_objectives_on_account_id"
     t.index ["department_id"], name: "index_objectives_on_department_id"
   end

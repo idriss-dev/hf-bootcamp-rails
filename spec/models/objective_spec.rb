@@ -26,6 +26,7 @@ RSpec.describe Objective, type: :model do
   it { should validate_presence_of(:milestones) }
 
   it { should belong_to(:account) }
+  it { should belong_to(:department) }
 
   it { should be_valid }
 

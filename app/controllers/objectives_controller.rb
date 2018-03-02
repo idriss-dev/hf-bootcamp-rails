@@ -1,4 +1,5 @@
 class ObjectivesController < ApplicationController
+  before_action :authenticate_account
   before_action :set_objective, only: [:show, :update, :destroy]
 
   # GET /objectives

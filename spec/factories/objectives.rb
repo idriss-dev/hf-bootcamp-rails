@@ -9,5 +9,6 @@ FactoryBot.define do
     priorities "MyString"
 
     account
+    department
   end
 end
