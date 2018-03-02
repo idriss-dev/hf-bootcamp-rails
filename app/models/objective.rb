@@ -1,6 +1,7 @@
 class Objective < ApplicationRecord
   belongs_to :account
   belongs_to :department
+  has_and_belongs_to_many :assignees, class_name: "Account", foreign_key: "account_id"
 
   validates_presence_of     :name
   validates_presence_of     :description

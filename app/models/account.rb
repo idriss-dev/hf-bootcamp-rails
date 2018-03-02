@@ -16,6 +16,8 @@ class Account < ApplicationRecord
   before_validation :set_user, if: :is_invited?
   after_validation :send_user_invitation, if: :is_invited?
 
+  has_and_belongs_to_many :objectives
+
   private
 
   def is_invited?
