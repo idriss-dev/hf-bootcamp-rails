@@ -20,17 +20,15 @@ class AccountsController < ApplicationController
        @apiName SignAccount
        @apiGroup Account
 
-       @apiParam {String} data.email Email of the user
-       @apiParam {String} data.password Password of the user
-       @apiParam {String} data.password_confirmation Password confirmation
-       @apiParam {String} data.full_name Full name of the user
+       @apiParam {String} email Email of the user
+       @apiParam {String} password Password of the user
+       @apiParam {String} password_confirmation Password confirmation
+       @apiParam {String} full_name Full name of the user
 
-       @apiParam {String} meta.jwt the jwt auth token
+       @apiSuccess (200) {String} meta.jwt the Json Web Token of the user
+       @apiSuccess (200) {Object} Data Account saved data
 
-       @apiSuccess (200) {String} jwt the Json Web Token of the user
-       @apiSuccess (200) {Object} User saved data
-
-       @apiError (422) {Object} User Save Error
+       @apiError (422) {Object} Errors Account Save Error
 =end
   def signup
     new_admin = account_params
@@ -67,12 +65,12 @@ class AccountsController < ApplicationController
 
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
-       @apiParam {String} data.email Email of the user
+       @apiParam {String} email Email of the user
 
-       @apiSuccess (200)  {Object} data.msg invitation sent
+       @apiSuccess (200)  {Object} data msg invitation sent
 
-       @apiError (422) {Object} ModelAttr error message
-       @apiError (401) {Object} User only admins can send invitations
+       @apiError (422) {Object} errors Account Save Error
+       @apiError (401) {Object} msg only admins can send invitations
 =end
 
   def invite
