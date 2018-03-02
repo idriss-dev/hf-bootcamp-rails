@@ -15,6 +15,7 @@ class AccountsController < ApplicationController
     render json: @account
   end
 
+#TODO fixes the apiParams and the return object information
 =begin
        @api {post} /accounts/signup Creates a company account
        @apiName SignAccount
@@ -60,6 +61,7 @@ class AccountsController < ApplicationController
     @account.destroy
   end
 
+#TODO fixes the apiParams and the return object information
 =begin
        @api {post} /accounts/invite invites a user
        @apiName InviteAccount

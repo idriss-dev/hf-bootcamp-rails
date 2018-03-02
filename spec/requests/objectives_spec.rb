@@ -19,15 +19,7 @@ describe "Objectives", type: :request do
   }
 
   let(:objective_missing_name) {
-    FactoryBot.attributes_for :objective, :missing_name
-  }
-
-  let(:objective_missing_account) {
-    FactoryBot.attributes_for :objective, :missing_account
-  }
-
-  let(:objective_missing_department) {
-    FactoryBot.attributes_for :objective, :missing_department
+    FactoryBot.attributes_for(:objective).except(:name)
   }
 
   describe "GET /objectives" do
@@ -36,10 +28,7 @@ describe "Objectives", type: :request do
         headers: auth_headers(user_account.id)
     end
 
-    it "works! (now write some real specs)" do
-      get department_objective_path(department.id)
-      expect(response).to have_http_status(200)
-    end
+    it { expect(response).to have_http_status(:ok) }
   end
 
   describe "POST departments/:id/objectives" do
@@ -76,20 +65,6 @@ describe "Objectives", type: :request do
 
       it "renders the json errors on why the Objective could not be created, due to missing name" do
         expect(json_response[:name]).to include "can't be blank"
-      end
-
-      it { expect(response).to have_http_status(:unprocessable_entity) }
-    end
-
-    context "with missing department id" do
-      before(:each) do
-        post department_objectives_path(department.id),
-          headers: auth_headers(user_account.id),
-          params: { objective: objective_missing_department }
-      end
-
-      it "renders the json errors on why the Objective could not be created, due to missing department" do
-        expect(json_response[:department]).to include "can't be blank"
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
