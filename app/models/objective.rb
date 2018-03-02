@@ -1,5 +1,4 @@
 class Objective < ApplicationRecord
-  # TODO add status attribute as enum
   # TODO give status a default value red on migration
   # TODO give progress a default value 0
 

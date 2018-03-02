@@ -26,6 +26,9 @@ RSpec.describe Objective, type: :model do
 
   it { should define_enum_for(:status) }
   it { should allow_value(0).for(:status) }
+  it { should allow_value(0).for(:status) }
+
+  it { should have_db_column(:status).with_options(default: :red) }
 
   it { should belong_to(:account) }
   it { should belong_to(:department) }
