@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   resources :organizations
-  resources :departments
-  resources :objectives
+
+  resources :departments do
+    resources :objectives
+  end
+
   resources :accounts do
     collection do
       post 'invite'

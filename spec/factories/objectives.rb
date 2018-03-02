@@ -10,5 +10,23 @@ FactoryBot.define do
 
     account
     department
+
+    trait :missing_name do
+      after(:create) do |instance|
+        instance.delete(name)
+      end
+    end
+
+    trait :missing_account do
+      after(:create) do |instance|
+        instance.delete(account)
+      end
+    end
+
+    trait :missing_department do
+      after(:create) do |instance|
+        instance.delete(account)
+      end
+    end
   end
 end
