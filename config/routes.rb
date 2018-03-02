@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :organizations
+  resources :departments
   resources :objectives
   resources :accounts do
     collection do

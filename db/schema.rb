@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180228102457) do
+ActiveRecord::Schema.define(version: 20180302102953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,10 +27,15 @@ ActiveRecord::Schema.define(version: 20180228102457) do
     t.boolean "is_invited", default: false
   end
 
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "objectives", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "assignee_id"
     t.date "due_date"
     t.integer "department_id"
     t.integer "status"
@@ -39,8 +44,15 @@ ActiveRecord::Schema.define(version: 20180228102457) do
     t.string "priorities"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["assignee_id"], name: "index_objectives_on_assignee_id"
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_objectives_on_account_id"
     t.index ["department_id"], name: "index_objectives_on_department_id"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
