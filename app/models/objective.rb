@@ -1,4 +1,8 @@
 class Objective < ApplicationRecord
+  # TODO add status attribute as enum
+  # TODO give status a default value red on migration
+  # TODO give progress a default value 0
+
   belongs_to :account
   belongs_to :department
 
@@ -6,7 +10,5 @@ class Objective < ApplicationRecord
   validates_presence_of     :description
   validates_presence_of     :due_date
   validates_presence_of     :status
-  validates_presence_of     :progress
-  validates_presence_of     :milestones
   validates_presence_of     :account
 end
