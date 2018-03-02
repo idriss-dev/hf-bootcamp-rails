@@ -17,7 +17,7 @@ class ApplicationController < ActionController::API
 
        @apiSuccess (200)  {String} success message
 
-       @apiError (422) {Object} User Save Error
+       @apiError (422) {Object} Account Save Error
 =end
 
 
