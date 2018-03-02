@@ -22,6 +22,10 @@ RSpec.describe Objective, type: :model do
   it { should validate_presence_of(:account) }
   it { should validate_presence_of(:due_date) }
   it { should validate_presence_of(:status) }
+  it { should validate_presence_of(:progress) }
+
+  it { should define_enum_for(:status) }
+  it { should allow_value(0).for(:status) }
 
   it { should belong_to(:account) }
   it { should belong_to(:department) }

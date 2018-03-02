@@ -11,4 +11,7 @@ class Objective < ApplicationRecord
   validates_presence_of     :due_date
   validates_presence_of     :status
   validates_presence_of     :account
+  validates_presence_of     :progress
+
+  enum status: [:red, :orange, :green]
 end

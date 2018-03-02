@@ -24,7 +24,7 @@ class ObjectivesController < ApplicationController
        @apiParam {String} name name of the objective
        @apiParam {String} description description of the objective
        @apiParam {String} due_date Due date for the objective to be delivered
-       @apiParam {Number} status {2: Green, 1: Orange, 0: Red}
+       @apiParam {Number} status {2: green, 1: orange, 0: red}
        @apiParam {String} progress percentage progress on the project
 
        @apiSuccess (200) {Object} Objective created objective
@@ -38,6 +38,7 @@ class ObjectivesController < ApplicationController
     @objective.department = @department
 
     if @objective.save
+      binding.pry
       render json: @objective, status: :created
     else
       render json: @objective.errors, status: :unprocessable_entity
