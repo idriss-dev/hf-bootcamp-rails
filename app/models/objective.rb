@@ -1,7 +1,4 @@
 class Objective < ApplicationRecord
-  # TODO give status a default value red on migration
-  # TODO give progress a default value 0
-
   belongs_to :account
   belongs_to :department
 
