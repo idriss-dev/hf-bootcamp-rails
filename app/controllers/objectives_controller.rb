@@ -36,9 +36,10 @@ class ObjectivesController < ApplicationController
     @objective = Objective.new(objective_params)
     @objective.account = current_account
     @objective.department = @department
+    binding.pry
+    @objective.parent = Objective.find(params.require(:objective)[:parent_id])
 
     if @objective.save
-      binding.pry
       render json: @objective, status: :created
     else
       render json: @objective.errors, status: :unprocessable_entity
@@ -71,6 +72,6 @@ class ObjectivesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def objective_params
-      params.require(:objective).permit(:name, :description, :assignee_id, :due_date, :department_id, :status, :progress, :milestones, :priorities)
+      params.require(:objective).permit(:name, :description, :due_date, :department_id, :status, :progress, :priorities, :milestones => [], :json_milestones => {})
     end
 end
