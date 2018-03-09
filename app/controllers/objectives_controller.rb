@@ -5,7 +5,7 @@ class ObjectivesController < ApplicationController
 
   # GET /objectives
   def index
-    @objectives = Objective.all
+    @objectives = Objective.where(objective_search_params)
     render json: @objectives
   end
 
@@ -36,7 +36,6 @@ class ObjectivesController < ApplicationController
     @objective = Objective.new(objective_params)
     @objective.account = current_account
     @objective.department = @department
-    binding.pry
     @objective.parent = Objective.find(params.require(:objective)[:parent_id])
 
     if @objective.save
@@ -73,5 +72,9 @@ class ObjectivesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def objective_params
       params.require(:objective).permit(:name, :description, :due_date, :department_id, :status, :progress, :priorities, :milestones => [], :json_milestones => {})
+    end
+
+    def objective_search_params
+      params.permit(:name, :description)
     end
 end

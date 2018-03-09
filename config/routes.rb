@@ -12,6 +12,4 @@ Rails.application.routes.draw do
       post 'signin' => 'account_token#create'
     end
   end
-
-  # TODO Organizations, Departments
 end
