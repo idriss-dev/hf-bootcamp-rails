@@ -55,7 +55,6 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
     @account.add_role "admin"
 
-    binding.pry
     jwt_token = Knock::AuthToken.new(payload: { sub: @account.id }).token
 
     if @account.save
@@ -95,10 +94,8 @@ class AccountsController < ApplicationController
 =end
 
   def invite
-    new_account = invite_params
-    new_account[:is_invited] = true
-    @account = Account.new(new_account)
-    binding.pry
+    @account = Account.new(invite_params)
+    @account.is_invited = true
     authorize @account
     if @account.save
       # NOTE: it would be better to have custom messages placed in a special folder

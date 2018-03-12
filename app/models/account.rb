@@ -12,7 +12,6 @@ class Account < ApplicationRecord
 
   validates_presence_of     :full_name
 
-  validates_length_of   :is_admin, allow_nil: false, allow_blank: false
   validates_length_of   :is_invited, allow_nil: false, allow_blank: false
 
   before_validation :set_user, if: :is_invited?
