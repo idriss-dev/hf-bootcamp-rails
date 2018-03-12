@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309160455) do
+ActiveRecord::Schema.define(version: 20180312120857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,10 +52,10 @@ ActiveRecord::Schema.define(version: 20180309160455) do
     t.integer "priorities"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "department_id"
     t.bigint "objective_id"
     t.integer "account_id"
     t.jsonb "json_milestones", default: "{}"
+    t.bigint "department_id"
     t.index ["department_id"], name: "index_objectives_on_department_id"
     t.index ["objective_id"], name: "index_objectives_on_objective_id"
   end
@@ -78,4 +78,5 @@ ActiveRecord::Schema.define(version: 20180309160455) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
+  add_foreign_key "objectives", "departments"
 end

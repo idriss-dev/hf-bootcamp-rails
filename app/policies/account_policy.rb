@@ -6,7 +6,6 @@ class AccountPolicy
   end
 
   def invite?
-    binding.pry
     account.has_role? :admin
   end
 end

@@ -3,6 +3,17 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: [:show, :update, :destroy]
   before_action :set_department, only: [:create]
 
+=begin
+       @api {get} /departments/:department_id/objectives?name=[value]&description=[value] search objectives by title, description
+       @apiName  allObjectives
+       @apiGroup Objective
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiSuccess (200) {Object} Objectives results
+
+       @apiError (422) {Object} Objective Query Error
+=end
   # GET /objectives
   def index
     @objectives = Objective.where(objective_search_params)
@@ -27,7 +38,7 @@ class ObjectivesController < ApplicationController
        @apiParam {Number} status {2: green, 1: orange, 0: red}
        @apiParam {String} progress percentage progress on the project
 
-       @apiSuccess (200) {Object} Objective created objective
+       @apiSuccess (201) {Object} Objective created objective
 
        @apiError (422) {Object} Objective Save Error
 =end
