@@ -77,7 +77,7 @@ class DepartmentsController < ApplicationController
 
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
-       @apiSuccess (204)
+       @apiSuccess (204) Blank
 
        @apiError (422) {Object} Query Error
 =end
