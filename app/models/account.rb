@@ -1,4 +1,6 @@
 class Account < ApplicationRecord
+  resourcify
+  rolify
   has_secure_password
 
   validates_length_of       :password, maximum: 72, minimum: 8, allow_nil: true, allow_blank: false
@@ -22,10 +24,6 @@ class Account < ApplicationRecord
 
   def is_invited?
     is_invited
-  end
-
-  def is_admin?
-    is_admin
   end
 
   def set_user

@@ -1,4 +1,5 @@
 class Objective < ApplicationRecord
+  resourcify
   belongs_to :account
   belongs_to :department
   has_many :childs, :class_name => "Objective", foreign_key: "objective_id"

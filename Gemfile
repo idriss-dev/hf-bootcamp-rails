@@ -14,6 +14,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'knock'
 gem 'multi_json', '~> 1.13.1'
 gem 'oj', '~> 3.4.0'
+gem "pundit"
+gem 'rolify'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
