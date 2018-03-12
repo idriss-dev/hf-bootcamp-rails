@@ -16,6 +16,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   def create
     @organization = Organization.new(organization_params)
+    @organization.account = current_account
 
     if @organization.save
       render json: @organization, status: :created, location: @organization

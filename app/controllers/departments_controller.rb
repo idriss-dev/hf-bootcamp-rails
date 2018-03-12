@@ -1,5 +1,6 @@
 class DepartmentsController < ApplicationController
   before_action :set_department, only: [:show, :update, :destroy]
+  before_action :authenticate_account
 
   # GET /departments
   def index
@@ -16,6 +17,7 @@ class DepartmentsController < ApplicationController
   # POST /departments
   def create
     @department = Department.new(department_params)
+    @department.account = current_account
 
     if @department.save
       render json: @department, status: :created, location: @department

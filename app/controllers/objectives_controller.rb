@@ -5,7 +5,7 @@ class ObjectivesController < ApplicationController
 
   # GET /objectives
   def index
-    @objectives = Objective.all
+    @objectives = Objective.where(objective_search_params)
     render json: @objectives
   end
 
@@ -24,7 +24,7 @@ class ObjectivesController < ApplicationController
        @apiParam {String} name name of the objective
        @apiParam {String} description description of the objective
        @apiParam {String} due_date Due date for the objective to be delivered
-       @apiParam {Number} status {2: Green, 1: Orange, 0: Red}
+       @apiParam {Number} status {2: green, 1: orange, 0: red}
        @apiParam {String} progress percentage progress on the project
 
        @apiSuccess (200) {Object} Objective created objective
@@ -36,6 +36,7 @@ class ObjectivesController < ApplicationController
     @objective = Objective.new(objective_params)
     @objective.account = current_account
     @objective.department = @department
+    @objective.parent = Objective.find(params.require(:objective)[:parent_id])
 
     if @objective.save
       render json: @objective, status: :created
@@ -70,6 +71,10 @@ class ObjectivesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def objective_params
-      params.require(:objective).permit(:name, :description, :assignee_id, :due_date, :department_id, :status, :progress, :milestones, :priorities)
+      params.require(:objective).permit(:name, :description, :due_date, :department_id, :status, :progress, :priorities, :milestones => [], :json_milestones => {})
+    end
+
+    def objective_search_params
+      params.permit(:name, :description)
     end
 end
