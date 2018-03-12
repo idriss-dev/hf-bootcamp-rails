@@ -97,6 +97,7 @@ class AccountsController < ApplicationController
     @account = Account.new(invite_params)
     @account.is_invited = true
     authorize @account
+    binding.pry
     if @account.save
       # NOTE: it would be better to have custom messages placed in a special folder
       render json: { data: { msg: "invitation sent" }}, status: :created, location: @account

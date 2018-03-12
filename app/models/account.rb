@@ -15,7 +15,7 @@ class Account < ApplicationRecord
   validates_length_of   :is_invited, allow_nil: false, allow_blank: false
 
   before_validation :set_user, if: :is_invited?
-  after_validation :send_user_invitation, if: :is_invited?
+  after_save :send_user_invitation, if: :is_invited?
 
   has_and_belongs_to_many :objectives
 
