@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   resources :organizations
-  resources :departments
-  resources :objectives
+
+  resources :departments do
+    resources :objectives
+  end
+
   resources :accounts do
     collection do
       post 'invite'
@@ -9,6 +12,4 @@ Rails.application.routes.draw do
       post 'signin' => 'account_token#create'
     end
   end
-
-  # TODO Organizations, Departments
 end

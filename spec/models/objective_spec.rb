@@ -23,7 +23,13 @@ RSpec.describe Objective, type: :model do
   it { should validate_presence_of(:due_date) }
   it { should validate_presence_of(:status) }
   it { should validate_presence_of(:progress) }
-  it { should validate_presence_of(:milestones) }
+
+  it { should define_enum_for(:status) }
+  it { should allow_value(0).for(:status) }
+  it { should allow_value(0).for(:status) }
+
+  it { should have_db_column(:status).with_options(default: :red) }
+  it { should have_db_column(:progress).with_options(default: 0.0) }
 
   it { should belong_to(:account) }
   it { should belong_to(:department) }
