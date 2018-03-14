@@ -1,4 +1,5 @@
 class OrganizationsController < ApplicationController
+  after_action :verify_authorized, except: [:index, :show]
   before_action :set_organization, only: [:show, :update, :destroy]
   before_action :authenticate_account
 
@@ -16,7 +17,6 @@ class OrganizationsController < ApplicationController
 =end
   def index
     @organizations = Organization.all
-
     render json: @organizations
   end
 
@@ -41,6 +41,7 @@ class OrganizationsController < ApplicationController
   def create
     @organization = Organization.new(organization_params)
     @organization.account = current_account
+    authorize @organization
 
     if @organization.save
       render json: @organization, status: :created, location: @organization
@@ -64,6 +65,7 @@ class OrganizationsController < ApplicationController
 =end
   def update
     if @organization.update(organization_params)
+      authorize @organization
       render json: @organization
     else
       render json: @organization.errors, status: :unprocessable_entity
@@ -83,6 +85,7 @@ class OrganizationsController < ApplicationController
 =end
   def destroy
     @organization.destroy
+    authorize @organization
   end
 
   private

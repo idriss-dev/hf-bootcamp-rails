@@ -1,4 +1,5 @@
 class DepartmentsController < ApplicationController
+  after_action :verify_authorized, except: [:index, :show]
   before_action :set_department, only: [:show, :update, :destroy]
   before_action :authenticate_account
 
@@ -16,7 +17,6 @@ class DepartmentsController < ApplicationController
 =end
   def index
     @departments = Department.all
-
     render json: @departments
   end
 
@@ -41,6 +41,7 @@ class DepartmentsController < ApplicationController
   def create
     @department = Department.new(department_params)
     @department.account = current_account
+    authorize @department
 
     if @department.save
       render json: @department, status: :created, location: @department
@@ -64,6 +65,7 @@ class DepartmentsController < ApplicationController
 =end
   def update
     if @department.update(department_params)
+      authorize @department
       render json: @department
     else
       render json: @department.errors, status: :unprocessable_entity
@@ -83,6 +85,7 @@ class DepartmentsController < ApplicationController
 =end
   def destroy
     @department.destroy
+    authorize @department
   end
 
   private
