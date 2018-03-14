@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  # TODO Signin should return user information and jwt in the same format as signup
+  after_action :verify_authorized, only: :invite
   before_action :authenticate_account, :only => [:invite]
   before_action :set_account, only: [:show, :update, :destroy]
 
@@ -16,6 +16,26 @@ class AccountsController < ApplicationController
   end
 
 =begin
+       @api {post} accounts/signin signin a user
+       @apiName SigninAccount
+       @apiGroup Account
+
+       @apiParam {Object} auth Authentication information (email, password)
+
+       @apiParamExample {json} Request-Example:
+       {
+        "auth": {
+          "email": "email@example.com",
+          "password": "NotASekeret"
+        }
+       }
+
+       @apiSuccess (200)  {String} success message
+
+       @apiError (422) {Object} User Save Error
+=end
+
+=begin
        @api {post} /accounts/signup Creates a company account
        @apiName SignAccount
        @apiGroup Account
@@ -30,10 +50,10 @@ class AccountsController < ApplicationController
 
        @apiError (422) {Object} Errors Account Save Error
 =end
+
   def signup
-    new_admin = account_params
-    new_admin[:is_admin] = true
-    @account = Account.new(new_admin)
+    @account = Account.new(account_params)
+    @account.add_role "admin"
 
     jwt_token = Knock::AuthToken.new(payload: { sub: @account.id }).token
 
@@ -74,19 +94,14 @@ class AccountsController < ApplicationController
 =end
 
   def invite
-    if current_account.is_admin
-      new_account = invite_params
-      new_account[:is_invited] = true
-      @account = Account.new(new_account)
-
-      if @account.save
-        # NOTE: it would be better to have custom messages placed in a special folder
-        render json: { data: { msg: "invitation sent" }}, status: :created, location: @account
-      else
-        render json: @account.errors, status: :unprocessable_entity
-      end
+    @account = Account.new(invite_params)
+    @account.is_invited = true
+    authorize @account
+    if @account.save
+      # NOTE: it would be better to have custom messages placed in a special folder
+      render json: { data: { msg: "invitation sent" }}, status: :created, location: @account
     else
-        render json: { data: { msg: "only admins can send invitations" }}, status: :unauthorized
+      render json: @account.errors, status: :unprocessable_entity
     end
   end
 

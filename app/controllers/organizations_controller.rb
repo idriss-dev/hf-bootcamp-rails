@@ -1,10 +1,22 @@
 class OrganizationsController < ApplicationController
+  after_action :verify_authorized, except: [:index, :show]
   before_action :set_organization, only: [:show, :update, :destroy]
+  before_action :authenticate_account
 
-  # GET /organizations
+=begin
+       @api {get} /organizations/ All
+       @apiName allOrganization
+       @apiGroup Organization
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+
+       @apiSuccess (200) {Object} data Query Results
+
+       @apiError (422) {Object} Query Error
+=end
   def index
     @organizations = Organization.all
-
     render json: @organizations
   end
 
@@ -13,9 +25,23 @@ class OrganizationsController < ApplicationController
     render json: @organization
   end
 
-  # POST /organizations
+=begin
+       @api {post} /organizations/ Add
+       @apiName createOrganization
+       @apiGroup Organization
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiParam {String} name name of the Organization
+
+       @apiSuccess (201) {Object} data created Organization
+
+       @apiError (422) {Object} Query Error
+=end
   def create
     @organization = Organization.new(organization_params)
+    @organization.account = current_account
+    authorize @organization
 
     if @organization.save
       render json: @organization, status: :created, location: @organization
@@ -24,18 +50,42 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /organizations/1
+=begin
+       @api {put} /organizations/:organization_id Update
+       @apiName updateOrganization
+       @apiGroup Organization
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiParam {String} name name of the Organization
+
+       @apiSuccess (200) {Object} data updated organization
+
+       @apiError (422) {Object} Query Error
+=end
   def update
     if @organization.update(organization_params)
+      authorize @organization
       render json: @organization
     else
       render json: @organization.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /organizations/1
+=begin
+       @api {delete} /organization/:organization_id delete
+       @apiName deleteOrganization
+       @apiGroup Organization
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiSuccess (204) Blank
+
+       @apiError (422) {Object} Query Error
+=end
   def destroy
     @organization.destroy
+    authorize @organization
   end
 
   private

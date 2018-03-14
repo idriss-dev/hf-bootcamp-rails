@@ -69,8 +69,9 @@ RSpec.configure do |config|
 
   config.include(Request::JsonHelpers, type: :request)
   config.include(Request::AuthHelpers, type: :request)
-  config.include(Request::AuthHelpers, type: :controller)
   config.include(Request::AccountHelpers, type: :request)
+
+  config.include(Request::AuthHelpers, type: :controller)
 
   config.include(EmailSpec::Helpers)
   config.include(EmailSpec::Matchers)

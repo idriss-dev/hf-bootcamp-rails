@@ -55,6 +55,8 @@ ActiveRecord::Schema.define(version: 20180314113331) do
     t.bigint "objective_id"
     t.integer "account_id"
     t.jsonb "json_milestones", default: "{}"
+    t.bigint "department_id"
+    t.index ["department_id"], name: "index_objectives_on_department_id"
     t.index ["objective_id"], name: "index_objectives_on_objective_id"
   end
 
@@ -76,4 +78,5 @@ ActiveRecord::Schema.define(version: 20180314113331) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
+  add_foreign_key "objectives", "departments"
 end

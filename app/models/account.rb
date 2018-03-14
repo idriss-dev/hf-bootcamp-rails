@@ -1,4 +1,6 @@
 class Account < ApplicationRecord
+  resourcify
+  rolify
   has_secure_password
 
   validates_length_of       :password, maximum: 72, minimum: 8, allow_nil: true, allow_blank: false
@@ -9,12 +11,12 @@ class Account < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
   validates_presence_of     :full_name
-
-  validates_length_of   :is_admin, allow_nil: false, allow_blank: false
   validates_length_of   :invited, allow_nil: false, allow_blank: false
 
   before_validation :set_user, if: :invited?
-  after_validation :send_user_invitation, if: :invited?
+  after_save :send_user_invitation, if: :invited?
+
+  has_and_belongs_to_many :objectives
 
   private
 
