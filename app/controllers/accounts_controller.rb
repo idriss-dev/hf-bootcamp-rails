@@ -95,7 +95,7 @@ class AccountsController < ApplicationController
 
   def invite
     @account = Account.new(invite_params)
-    @account.is_invited = true
+    @account.invited = true
     authorize @account
     if @account.save
       # NOTE: it would be better to have custom messages placed in a special folder
