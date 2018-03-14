@@ -1,15 +1,16 @@
 FactoryBot.define do
   factory :account do
     email { FFaker::Internet.email }
-    password "12345678"
-    password_confirmation "12345678"
-    is_admin true
-    is_invited false
     full_name { FFaker::Name.name }
 
-    trait :not_admin do
-      is_admin false
+    trait :invited do
+      invited = true
+    end
+
+    after(:create) do |account|
+      password = FFaker:Internet.password
+      account.password = password
+      account.password_confirmation = password
     end
   end
-
 end
