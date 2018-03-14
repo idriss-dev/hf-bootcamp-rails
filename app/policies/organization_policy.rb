@@ -1,7 +1,7 @@
 class OrganizationPolicy
-  attr_reader :account, :record
+  attr_reader :account
 
-  def initialize(account, record)
+  def initialize(account)
     @account = account
   end
 

@@ -15,7 +15,7 @@ describe Account do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:password_digest) }
-  it { should respond_to(:is_invited) }
+  it { should respond_to(:invited) }
 
   it { should validate_presence_of(:email) }
   it { should validate_presence_of(:full_name) }
@@ -30,11 +30,10 @@ describe Account do
   it { should allow_value('example@domain.com').for(:email) }
   it { should_not allow_value('example domain').for(:email) }
 
-  it { should_not allow_value(nil).for(:is_admin) }
-  it { should_not allow_value(nil).for(:is_invited) }
+  it { should_not allow_value(nil).for(:invited) }
 
-  it { should_not callback(:set_user).before(:validation).unless(:is_invited?) }
-  it { should_not callback(:send_user_invitation).after(:validation).unless(:is_invited?) }
+  it { should_not callback(:set_user).before(:validation).unless(:invited?) }
+  it { should_not callback(:send_user_invitation).after(:validation).unless(:invited?) }
 
   it { should be_valid }
 end

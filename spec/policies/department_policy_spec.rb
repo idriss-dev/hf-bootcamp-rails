@@ -2,27 +2,25 @@ require 'spec_helper'
 
 RSpec.describe DepartmentPolicy do
 
-  let(:user) { User.new }
+  subject { DepartmentPolicy.new(account) }
 
-  subject { described_class }
+  context "for a user" do
+    let(:account) {
+      FactoryBot.create :account
+    }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { should_not permit :create }
+    it { should_not permit :update }
+    it { should_not permit :destroy }
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+  context "for an admin" do
+    let(:account) {
+      FactoryBot.create :account, :admin
+    }
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { should permit :create }
+    it { should permit :update }
+    it { should permit :destroy }
   end
 end
