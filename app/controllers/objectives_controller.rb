@@ -68,6 +68,7 @@ class ObjectivesController < ApplicationController
 
   # DELETE /objectives/1
   def destroy
+    binding.pry
     @objective.destroy
   end
 
