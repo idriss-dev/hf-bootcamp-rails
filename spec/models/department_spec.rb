@@ -1,5 +1,16 @@
 require 'spec_helper'
 
-RSpec.describe Department, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Department do
+  before { @department = FactoryBot.build(:department) }
+
+  it "has a valid factory" do
+    expect(build(:department)).to be_valid
+  end
+
+  subject { @department }
+
+  it { should respond_to(:name) }
+  it { should validate_presence_of(:name) }
+
+  it { should belong_to(:account) }
 end
