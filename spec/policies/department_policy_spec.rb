@@ -2,7 +2,11 @@ require 'spec_helper'
 
 RSpec.describe DepartmentPolicy do
 
-  subject { DepartmentPolicy.new(account) }
+  let(:department) {
+    FactoryBot.create :department
+  }
+
+  subject { DepartmentPolicy.new(account, department) }
 
   context "for a user" do
     let(:account) {
