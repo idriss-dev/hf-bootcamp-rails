@@ -3,6 +3,7 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: [:show, :update, :destroy]
   before_action :set_department, only: [:create]
 
+# TODO update APIDOCS with the correct apiError and apiSuccess information
 =begin
        @api {get} /departments/:department_id/objectives?name=[value]&description=[value] search objectives by title, description
        @apiName  allObjectives
@@ -47,7 +48,7 @@ class ObjectivesController < ApplicationController
     @objective = Objective.new(objective_params)
     @objective.account = current_account
     @objective.department = @department
-    @objective.parent = Objective.find(params.require(:objective)[:parent_id])
+    @objective.parent = Objective.find_by_id(params.require(:objective)[:parent_id])
 
     if @objective.save
       render json: @objective, status: :created

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :objective do
-    name FFaker::Name.name
+    sequence(:name) {|n| "objective#{n}" }
     description FFaker::Book::description
     due_date FFaker::Time::date
     status 'red'
@@ -10,5 +10,9 @@ FactoryBot.define do
 
     account
     department
+  end
+
+  trait :child do
+    parent_id 1
   end
 end

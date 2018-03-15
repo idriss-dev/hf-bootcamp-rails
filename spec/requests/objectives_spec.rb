@@ -2,12 +2,22 @@ require 'spec_helper'
 
 describe "Objectives", type: :request do
 
-  let(:valid_objective) {
+  #TODO: write integration test to search by name
+  #TODO: write integration test to search by description
+  #TODO: write integration test to verify index returns the right number of elements
+
+  #TODO: write integration test to create an objective with no parents
+  #TODO: write integration test to create an objective with parents
+  let(:valid_attributes) {
     FactoryBot.attributes_for :objective
   }
 
-  let(:user_account) {
-    FactoryBot.create :account, :not_admin
+  let(:valid_attributes_child) {
+    FactoryBot.attributes_for :objective, :child
+  }
+
+  let(:account) {
+    FactoryBot.create :account
   }
 
   let(:department) {
@@ -18,30 +28,82 @@ describe "Objectives", type: :request do
     FactoryBot.create_list(:objective, 10)
   }
 
-  let(:objective_missing_name) {
+  let(:invalid_attributes) {
     FactoryBot.attributes_for(:objective).except(:name)
   }
 
   describe "GET /objectives" do
-    before(:each) do
-      get department_objective_path(department.id, objectives[0].id),
-        headers: auth_headers(user_account.id)
+    context "with no search criteria specified" do
+      before(:each) do
+        get department_objectives_path(department.id, objectives[0].id),
+          headers: auth_headers(account.id)
+      end
+
+      it "should return list of existing objectives" do
+        objective_response = json_response[:data]
+        expect(objective_response.size).to eql objectives.size
+      end
+
+      it { expect(response).to have_http_status(:ok) }
     end
 
-    it { expect(response).to have_http_status(:ok) }
+    context "with name criteria specified" do
+      before(:each) do
+        get department_objectives_path(department.id, objectives[0].id),
+          params: {name: objectives[0].name},
+          headers: auth_headers(account.id)
+      end
+
+      it "should return list of objectives related to the specified name" do
+        objective_response = json_response[:data]
+        expect(objective_response[0][:attributes][:name]).to eql objectives[0].name
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+    end
+
+    context "with description criteria specified" do
+      before(:each) do
+        get department_objectives_path(department.id, objectives[0].id),
+          params: {description: objectives[0].description},
+          headers: auth_headers(account.id)
+      end
+
+      it "should return list of objectives related to the specified description" do
+        objective_response = json_response[:data]
+        expect(objective_response[0][:attributes][:description]).to eql objectives[0].description
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+    end
   end
 
-  describe "POST departments/:id/objectives" do
+  describe "POST objectives/:id/objectives" do
     context "with valid params" do
       before(:each) do
         post department_objectives_path(department.id),
-          headers: auth_headers(user_account.id),
-          params: { objective: valid_objective }
+          headers: auth_headers(account.id),
+          params: { objective: valid_attributes }
       end
 
       it "should return the objective" do
         objective_response = json_response[:data][:attributes]
-        expect(objective_response[:name]).to eql valid_objective[:name]
+        expect(objective_response[:name]).to eql valid_attributes[:name]
+      end
+
+      it { expect(response).to have_http_status(:created) }
+    end
+
+    context "with child valid params" do
+      before(:each) do
+        post department_objectives_path(department.id),
+          headers: auth_headers(account.id),
+          params: { objective: valid_attributes_child }
+      end
+
+      it "should return the objective" do
+        objective_response = json_response[:data][:attributes]
+        expect(objective_response[:name]).to eql valid_attributes_child[:name]
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -50,7 +112,7 @@ describe "Objectives", type: :request do
     context "with unauth user" do
       before(:each) do
         post department_objectives_path(department.id),
-          params: { objective: valid_objective }
+          params: { objective: valid_attributes }
       end
 
       it { expect(response).to have_http_status(:unauthorized) }
@@ -59,8 +121,8 @@ describe "Objectives", type: :request do
     context "with missing attribute name" do
       before(:each) do
         post department_objectives_path(department.id),
-          headers: auth_headers(user_account.id),
-          params: { objective: objective_missing_name }
+          headers: auth_headers(account.id),
+          params: { objective: invalid_attributes }
       end
 
       it "renders the json errors on why the Objective could not be created, due to missing name" do
