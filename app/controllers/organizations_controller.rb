@@ -11,9 +11,9 @@ class OrganizationsController < ApplicationController
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
 
-       @apiSuccess (200) {Object} data Query Results
+       @apiSuccess (200) {Object} data list of existing organizations
 
-       @apiError (422) {Object} Query Error
+       @apiError (500) {Object} error Internal Server Error
 =end
   def index
     @organizations = Organization.all
@@ -34,9 +34,9 @@ class OrganizationsController < ApplicationController
 
        @apiParam {String} name name of the Organization
 
-       @apiSuccess (201) {Object} data created Organization
+       @apiSuccess (201) {Object} data new Organization
 
-       @apiError (422) {Object} Query Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
   def create
     @organization = Organization.new(organization_params)
@@ -61,11 +61,11 @@ class OrganizationsController < ApplicationController
 
        @apiSuccess (200) {Object} data updated organization
 
-       @apiError (422) {Object} Query Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
   def update
+    authorize @organization
     if @organization.update(organization_params)
-      authorize @organization
       render json: @organization
     else
       render json: @organization.errors, status: :unprocessable_entity
@@ -81,11 +81,11 @@ class OrganizationsController < ApplicationController
 
        @apiSuccess (204) Blank
 
-       @apiError (422) {Object} Query Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
   def destroy
-    @organization.destroy
     authorize @organization
+    @organization.destroy
   end
 
   private

@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe OrganizationPolicy do
+  let(:organization) {
+    FactoryBot.create :organization
+  }
 
-  subject { OrganizationPolicy.new(account) }
+  subject { OrganizationPolicy.new(account, organization) }
 
   context "for a user" do
     let(:account) {

@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :organization do
-    name "MyString"
+    name FFaker::Name.name
+    account
   end
 end

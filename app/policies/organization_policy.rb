@@ -1,8 +1,9 @@
 class OrganizationPolicy
-  attr_reader :account
+  attr_reader :account, :organization
 
-  def initialize(account)
+  def initialize(account, organization)
     @account = account
+    @organization = organization
   end
 
   def create?

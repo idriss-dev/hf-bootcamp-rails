@@ -81,7 +81,7 @@ class DepartmentsController < ApplicationController
 
        @apiSuccess (204) Blank
 
-       @apiError (422) {Object} Query Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
   def destroy
     authorize @department
