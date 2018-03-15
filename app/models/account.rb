@@ -11,19 +11,14 @@ class Account < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
   validates_presence_of     :full_name
+  validates_length_of   :invited, allow_nil: false, allow_blank: false
 
-  validates_length_of   :is_invited, allow_nil: false, allow_blank: false
-
-  before_validation :set_user, if: :is_invited?
-  after_save :send_user_invitation, if: :is_invited?
+  before_validation :set_user, if: :invited?
+  after_save :send_user_invitation, if: :invited?
 
   has_and_belongs_to_many :objectives
 
   private
-
-  def is_invited?
-    is_invited
-  end
 
   def set_user
     self.password = (0...8).map { (65 + rand(26)).chr }.join

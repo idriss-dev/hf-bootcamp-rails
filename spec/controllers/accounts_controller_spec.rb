@@ -19,7 +19,7 @@ describe AccountsController do
   }
 
   let(:admin_account) {
-    FactoryBot.create :account
+    FactoryBot.create :account, :admin
   }
 
   describe "POST #signup" do

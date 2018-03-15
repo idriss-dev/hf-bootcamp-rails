@@ -21,11 +21,11 @@ describe "Accounts", type: :request do
   }
 
   let(:admin_account) {
-    FactoryBot.create :account
+    FactoryBot.create :account, :admin
   }
 
   let(:user_account) {
-    FactoryBot.create :account, :not_admin
+    FactoryBot.create :account
   }
 
   describe "POST #signup" do
@@ -113,21 +113,6 @@ describe "Accounts", type: :request do
       before(:each) do
         post user_invite_path(accounts_path),
              params: { account: invalid_invited_user }
-      end
-
-      it { expect(response).to have_http_status(:unauthorized) }
-    end
-
-    context "with non admin user" do
-
-      before(:each) do
-        post user_invite_path(accounts_path),
-             headers: auth_headers(user_account.id),
-             params: { account: valid_invited_user }
-      end
-
-      it "renders the json errors on why the Invitation could not be created" do
-        expect(json_response[:data][:msg]).to include "only admins can send invitations"
       end
 
       it { expect(response).to have_http_status(:unauthorized) }
