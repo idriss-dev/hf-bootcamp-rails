@@ -1,7 +1,7 @@
 class DepartmentPolicy
   attr_reader :account
 
-  def initialize(account, records)
+  def initialize(account)
     @account = account
   end
 
