@@ -11,9 +11,9 @@ class DepartmentsController < ApplicationController
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
 
-       @apiSuccess (200) {Object} data Query Results
+       @apiSuccess (200) {Object} data list of existing departments
 
-       @apiError (422) {Object} Query Error
+       @apiError (500) {Object} error Internal Server Error
 =end
   def index
     @departments = Department.all
@@ -33,9 +33,9 @@ class DepartmentsController < ApplicationController
 
        @apiParam {String} name name of the Department
 
-       @apiSuccess (201) {Object} data created department
+       @apiSuccess (201) {Object} data new department
 
-       @apiError (422) {Object} Query Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
   # POST /departments
   def create
@@ -61,11 +61,11 @@ class DepartmentsController < ApplicationController
 
        @apiSuccess (200) {Object} data updated department
 
-       @apiError (422) {Object} Query Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
   def update
+    authorize @department
     if @department.update(department_params)
-      authorize @department
       render json: @department
     else
       render json: @department.errors, status: :unprocessable_entity
@@ -84,8 +84,8 @@ class DepartmentsController < ApplicationController
        @apiError (422) {Object} Query Error
 =end
   def destroy
-    @department.destroy
     authorize @department
+    @department.destroy
   end
 
   private

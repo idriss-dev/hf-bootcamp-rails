@@ -1,8 +1,9 @@
 class DepartmentPolicy
-  attr_reader :account
+  attr_reader :account, :department
 
-  def initialize(account)
+  def initialize(account, department)
     @account = account
+    @department = department
   end
 
   def create?
