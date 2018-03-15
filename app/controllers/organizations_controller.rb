@@ -64,8 +64,8 @@ class OrganizationsController < ApplicationController
        @apiError (422) {Object} Query Error
 =end
   def update
+    authorize @organization
     if @organization.update(organization_params)
-      authorize @organization
       render json: @organization
     else
       render json: @organization.errors, status: :unprocessable_entity
