@@ -14,6 +14,7 @@ class Objective < ApplicationRecord
   validates_presence_of     :status
   validates_presence_of     :account
   validates_presence_of     :priorities
+  validates_presence_of     :progress
 
   enum status: [:red, :orange, :green]
   enum priorities: [:p1, :p2, :p3, :p4, :p5]
