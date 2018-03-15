@@ -5,15 +5,10 @@ FactoryBot.define do
     due_date FFaker::Time::date
     status 'red'
     progress "9.99"
-    milestones "MyString"
-    priorities "MyString"
+    milestones ["val", "val", "val"]
+    priorities "p1"
 
     account
     department
-    association :assignees, factory: :account
-
-    after :create do
-      create_list :assignees, 3, objective: objective
-    end
   end
 end
