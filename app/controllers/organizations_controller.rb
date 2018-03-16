@@ -1,5 +1,4 @@
 class OrganizationsController < ApplicationController
-  # TODO make organization parent of department
   after_action :verify_authorized, except: [:index, :show]
   before_action :set_organization, only: [:show, :update, :destroy]
   before_action :authenticate_account

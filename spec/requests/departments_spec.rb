@@ -6,7 +6,7 @@ RSpec.describe "Departments", type: :request do
 
   let(:valid_attributes) { (FactoryBot.build :department).attributes.symbolize_keys  }
 
-  let(:invalid_attributes) { (FactoryBot.build :department).attributes.symbolize_keys.except(:name) }
+  let(:invalid_attributes) { (FactoryBot.build :department, :no_name).attributes.symbolize_keys }
 
   let(:departments) { FactoryBot.create_list(:department, 10) }
 
@@ -99,7 +99,6 @@ RSpec.describe "Departments", type: :request do
 
     context "with invalid params" do
       before(:each) do
-        invalid_attributes[:name] = ""
         put department_path( departments[0].id ),
           headers: auth_headers( admin.id ),
           params: { department: invalid_attributes }
