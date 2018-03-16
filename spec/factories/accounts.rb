@@ -14,5 +14,15 @@ FactoryBot.define do
         |account| account.add_role(:admin)
       }
     end
+
+    trait :no_full_name do
+      after(:build) {
+        |account| account.full_name = ""
+      }
+
+      after(:create) {
+        |account| account.full_name = ""
+      }
+    end
   end
 end
