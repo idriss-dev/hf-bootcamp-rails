@@ -32,6 +32,7 @@ class DepartmentsController < ApplicationController
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
        @apiParam {String} name name of the Department
+       @apiParam {Number} organization_id the id of the parent Organization
 
        @apiSuccess (201) {Object} data new department
 
@@ -58,6 +59,7 @@ class DepartmentsController < ApplicationController
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
        @apiParam {String} name name of the Department
+       @apiParam {Number} organization_id the id of the parent Organization
 
        @apiSuccess (200) {Object} data updated department
 
