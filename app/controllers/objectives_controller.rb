@@ -97,7 +97,6 @@ class ObjectivesController < ApplicationController
        @apiError (422) {Object} attribute Unprocessable Entity
 =end
   def destroy
-    binding.pry
     @objective.destroy
   end
 
