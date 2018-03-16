@@ -4,21 +4,32 @@ RSpec.describe "Departments", type: :request do
 
   let(:admin) { FactoryBot.create :account, :admin }
 
-  let(:department) { FactoryBot.create :department }
+  let(:valid_attributes) { (FactoryBot.build :department).attributes.symbolize_keys  }
+
+  let(:invalid_attributes) { (FactoryBot.build :department).attributes.symbolize_keys.except(:name) }
 
   let(:departments) { FactoryBot.create_list(:department, 10) }
 
-  let(:valid_new_department) { FactoryBot.attributes_for :department }
+  describe "GET /departments/:department_id" do
 
-  let(:invalid_new_department) { { name: "" } }
+    before(:each) do
+      get department_path(departments[0].id),
+        headers: auth_headers(admin.id)
+    end
 
-  let(:valid_update_department) { FactoryBot.attributes_for :department }
+    it "should return specified department" do
+      department_response = json_response[:data]
+      expect(Integer(department_response[:id])).to eql departments[0].id
+      expect(department_response[:attributes][:name]).to eql departments[0].name
+      expect(department_response[:attributes]["organization-id".to_sym]).to eql departments[0].organization_id
+      expect(department_response[:attributes]["account-id".to_sym]).to eql departments[0].account_id
+    end
 
-  let(:invalid_update_department) { { name: "" } }
-
-  let(:departments) { FactoryBot.create_list(:department, 10) }
+    it { expect(response).to have_http_status(:ok) }
+  end
 
   describe "GET /departments" do
+
     before(:each) do
       departments
       get departments_path,
@@ -38,12 +49,14 @@ RSpec.describe "Departments", type: :request do
       before(:each) do
         post departments_path,
           headers: auth_headers(admin.id),
-          params: { department: valid_new_department}
+          params: { department: valid_attributes}
       end
 
       it "should return the new department in data attributes" do
         department_response = json_response[:data][:attributes]
-        expect(department_response[:name]).to eql valid_new_department[:name]
+        expect(department_response[:name]).to eql valid_attributes[:name]
+        expect(department_response["organization-id"]).to eql valid_attributes["organization-id"]
+        expect(department_response["account-id"]).to eql valid_attributes["account-id"]
       end
 
       it { expect(response).to have_http_status(:created) }
@@ -53,7 +66,7 @@ RSpec.describe "Departments", type: :request do
       before(:each) do
         post departments_path,
           headers: auth_headers(admin.id),
-          params: { department: invalid_new_department}
+          params: { department: invalid_attributes}
       end
 
       it "should return that the name can't be blank" do
@@ -66,16 +79,19 @@ RSpec.describe "Departments", type: :request do
   end
 
   describe "PUT /departments/:department_id" do
+
+    let(:new_attributes) { FactoryBot.attributes_for :department }
+
     context "with valid params" do
       before(:each) do
-        put department_path( department.id ),
+        put department_path( departments[0].id ),
           headers: auth_headers( admin.id ),
-          params: { department: valid_update_department }
+          params: { department: new_attributes }
       end
 
       it "should return the updated department in data attributes" do
         department_response = json_response[:data][:attributes]
-        expect(department_response[:name]).to eql valid_update_department[:name]
+        expect(department_response[:name]).to eql new_attributes[:name]
       end
 
       it { expect(response).to have_http_status(:ok) }
@@ -83,9 +99,10 @@ RSpec.describe "Departments", type: :request do
 
     context "with invalid params" do
       before(:each) do
-        put department_path( department.id ),
+        invalid_attributes[:name] = ""
+        put department_path( departments[0].id ),
           headers: auth_headers( admin.id ),
-          params: { department: invalid_update_department }
+          params: { department: invalid_attributes }
       end
 
       it "should return that the name can't be blank" do
@@ -99,7 +116,7 @@ RSpec.describe "Departments", type: :request do
 
   describe "DELETE /departments/:department_id" do
     before(:each) do
-      delete department_path( department.id ),
+      delete department_path( departments[0].id ),
         headers: auth_headers( admin.id )
     end
 

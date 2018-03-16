@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "Accounts", type: :request do
+  # TODO update invalid attributes with a factory attributes for except
   let(:valid_attributes) {
     FactoryBot.attributes_for :account
   }

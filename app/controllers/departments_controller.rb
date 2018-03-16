@@ -89,13 +89,12 @@ class DepartmentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_department
       @department = Department.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def department_params
-      params.require(:department).permit(:name)
+      params.require(:department).permit(:name, :organization_id)
     end
 end
