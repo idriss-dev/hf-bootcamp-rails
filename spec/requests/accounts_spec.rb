@@ -1,16 +1,12 @@
 require 'spec_helper'
 
 describe "Accounts", type: :request do
-  # TODO update invalid attributes with a factory attributes for except
   let(:valid_attributes) {
     FactoryBot.attributes_for :account
   }
 
   let(:invalid_attributes) {
-    {
-      password: "12345678",
-      password_confirmation: "12345678"
-    }
+    FactoryBot.attributes_for(:account).except(:full_name).except(:email)
   }
 
   let(:valid_invited_user) {
@@ -58,11 +54,6 @@ describe "Accounts", type: :request do
       it "should not have password_digest in the account response" do
         account_response = json_response[:data][:attributes]
         expect(account_response).to_not include(:password_digest)
-      end
-
-      it "should not have is_admin in the account response" do
-        account_response = json_response[:data][:attributes]
-        expect(account_response).to_not include(:is_admin)
       end
 
       it "should not have is_invited in the account response" do
