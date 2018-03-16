@@ -4,7 +4,7 @@ class Objective < ApplicationRecord
   belongs_to :department
   has_many :childs, :class_name => "Objective", foreign_key: "objective_id"
   belongs_to :parent, :class_name => "Objective", foreign_key: "objective_id", required: false
-  has_and_belongs_to_many :assignees, class_name: "Account", foreign_key: "account_id"
+  #has_and_belongs_to_many :assignees, class_name: "Account", foreign_key: "account_id"
 
   serialize :milestones, Array
 

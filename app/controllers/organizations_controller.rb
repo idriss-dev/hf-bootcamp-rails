@@ -10,7 +10,6 @@ class OrganizationsController < ApplicationController
 
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
-
        @apiSuccess (200) {Object} data list of existing organizations
 
        @apiError (500) {Object} error Internal Server Error

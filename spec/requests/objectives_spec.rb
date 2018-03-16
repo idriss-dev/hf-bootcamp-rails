@@ -2,12 +2,6 @@ require 'spec_helper'
 
 describe "Objectives", type: :request do
 
-  #TODO: write integration test to search by name
-  #TODO: write integration test to search by description
-  #TODO: write integration test to verify index returns the right number of elements
-
-  #TODO: write integration test to create an objective with no parents
-  #TODO: write integration test to create an objective with parents
   let(:valid_attributes) {
     FactoryBot.attributes_for :objective
   }
@@ -57,6 +51,7 @@ describe "Objectives", type: :request do
       it "should return list of objectives related to the specified name" do
         objective_response = json_response[:data]
         expect(objective_response[0][:attributes][:name]).to eql objectives[0].name
+        expect(objective_response.size).to eql 1
       end
 
       it { expect(response).to have_http_status(:ok) }
@@ -72,6 +67,7 @@ describe "Objectives", type: :request do
       it "should return list of objectives related to the specified description" do
         objective_response = json_response[:data]
         expect(objective_response[0][:attributes][:description]).to eql objectives[0].description
+        expect(objective_response.size).to eql objectives.size
       end
 
       it { expect(response).to have_http_status(:ok) }

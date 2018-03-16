@@ -105,18 +105,15 @@ RSpec.describe ObjectivesController, type: :controller do
     end
   end
   #TODO fix error of ActiveRecord::StatementInvalid (PG::UndefinedTable: ERROR:  relation "accounts_objectives" does not exist
-=begin
-     n
-     n  describe "DELETE #destroy" do
-     n    it "destroys the requested objective" do
-     n      request.headers.merge!(auth_headers(admin_account.id))
-     n      binding.pry
-     n      objective = Objective.create! valid_attributes
-     n      expect {
-     n        delete :destroy, params: {id: objective.to_param, department_id: department.id}
-     n      }.to change(Objective, :count).by(-1)
-     n    end
-     n  end
-=end
+
+  describe "DELETE #destroy" do
+    it "destroys the requested objective" do
+      request.headers.merge!(auth_headers(admin_account.id))
+      objective = Objective.create! valid_attributes
+      expect {
+        delete :destroy, params: {id: objective.to_param, department_id: department.id}
+      }.to change(Objective, :count).by(-1)
+    end
+  end
 
 end
