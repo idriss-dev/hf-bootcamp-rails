@@ -3,7 +3,6 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: [:show, :update, :destroy]
   before_action :set_department, only: [:create]
 
-# TODO update APIDOCS with the correct apiError and apiSuccess information
 =begin
        @api {get} /departments/:department_id/objectives?name=[value]&description=[value] search objectives by title, description
        @apiName  allObjectives
@@ -11,9 +10,9 @@ class ObjectivesController < ApplicationController
 
        @apiHeader {String} Authorization='Bearer :jwt_token:'
 
-       @apiSuccess (200) {Object} Objectives results
+       @apiSuccess (200) {Object} data list of existing objectives
 
-       @apiError (422) {Object} Objective Query Error
+       @apiError (500) {Object} error Internal Server Error
 =end
   # GET /objectives
   def index
@@ -27,7 +26,7 @@ class ObjectivesController < ApplicationController
   end
 
 =begin
-       @api {post} /departments/:department_id/objectives Creates an objective
+       @api {post} /departments/:department_id/objectives Creates
        @apiName createObjective
        @apiGroup Objective
 
@@ -38,10 +37,12 @@ class ObjectivesController < ApplicationController
        @apiParam {String} due_date Due date for the objective to be delivered
        @apiParam {Number} status {2: green, 1: orange, 0: red}
        @apiParam {String} progress percentage progress on the project
+       @apiParam {Array} milestones array of string of milestones name
+       @apiParam {Number} status {4: p5, 3: p4, 2: p3, 1: p2, 0: p1 }
 
        @apiSuccess (201) {Object} Objective created objective
 
-       @apiError (422) {Object} Objective Save Error
+       @apiError (422) {Object} attribute Unprocessable Entity
 =end
 
   def create
@@ -57,7 +58,25 @@ class ObjectivesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /objectives/1
+=begin
+       @api {put} /departments/:department_id/objectives/:objective_id Update
+       @apiName updateObjective
+       @apiGroup Objective
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiParam {String} name name of the objective
+       @apiParam {String} description description of the objective
+       @apiParam {String} due_date Due date for the objective to be delivered
+       @apiParam {Number} status {2: green, 1: orange, 0: red}
+       @apiParam {String} progress percentage progress on the project
+       @apiParam {Array} milestones array of string of milestones name
+       @apiParam {Number} status {4: p5, 3: p4, 2: p3, 1: p2, 0: p1 }
+
+       @apiSuccess (200) {Object} Objective created objective
+
+       @apiError (422) {Object} attribute Unprocessable Entity
+=end
   def update
     if @objective.update(objective_params)
       render json: @objective
@@ -66,7 +85,17 @@ class ObjectivesController < ApplicationController
     end
   end
 
-  # DELETE /objectives/1
+=begin
+       @api {delete} /departments/:department_id/objectives/:objective_id delete
+       @apiName deleteObjective
+       @apiGroup Objective
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiSuccess (204) Blank
+
+       @apiError (422) {Object} attribute Unprocessable Entity
+=end
   def destroy
     binding.pry
     @objective.destroy
