@@ -7,11 +7,11 @@ RSpec.describe OrganizationsController, type: :controller do
   end
 
   let(:valid_attributes) {
-    FactoryBot.attributes_for :organization
+    (FactoryBot.build :organization).attributes.symbolize_keys
   }
 
   let(:invalid_attributes) {
-    { name: "" }
+    (FactoryBot.build :organization, :no_name).attributes.symbolize_keys
   }
 
   let(:admin_account) {
