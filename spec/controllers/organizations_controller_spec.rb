@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe OrganizationsController, type: :controller do
-
+# TODO removes this line and replace with the right build valid_attributes
   before(:each) do
     valid_attributes[:account_id] = admin_account.id
   end

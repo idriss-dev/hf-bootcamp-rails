@@ -2,12 +2,8 @@ require 'spec_helper'
 
 RSpec.describe DepartmentsController, type: :controller do
 
-  before(:each) do
-    valid_attributes[:account_id] = admin_account.id
-  end
-
   let(:valid_attributes) {
-    FactoryBot.attributes_for :department
+    (FactoryBot.build :department).attributes.symbolize_keys
   }
 
   let(:invalid_attributes) {
@@ -18,6 +14,9 @@ RSpec.describe DepartmentsController, type: :controller do
     FactoryBot.create :account, :admin
   }
 
+  let(:organization) {
+    FactoryBot.create :organization
+  }
 
   describe "GET #index" do
     it "returns a success response" do

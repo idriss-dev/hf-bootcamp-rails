@@ -13,4 +13,5 @@ describe Department do
   it { should validate_presence_of(:name) }
 
   it { should belong_to(:account) }
+  it { should belong_to(:organization) }
 end
