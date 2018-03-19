@@ -21,6 +21,17 @@ class ObjectivesController < ApplicationController
     render json: @objectives
   end
 
+=begin
+       @api {get} /departments/:department_id/objectives/:id/tree render of tree of objective from an objective parent id
+       @apiName  treeObjectives
+       @apiGroup Objective
+
+       @apiHeader {String} Authorization='Bearer :jwt_token:'
+
+       @apiSuccess (200) {Object} data tree of objectives
+
+       @apiError (500) {Object} error Internal Server Error
+=end
   def tree
     render json: @objective_tree
   end
