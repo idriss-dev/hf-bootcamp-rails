@@ -8,7 +8,7 @@ RSpec.describe "Organizations", type: :request do
 
   let(:valid_attributes) { FactoryBot.attributes_for :organization }
 
-  let(:invalid_attributes) { { name: "" } }
+  let(:invalid_attributes) { (FactoryBot.build :organization, :no_name).attributes.symbolize_keys }
 
   describe "GET /organizations" do
     let(:organizations) { FactoryBot.create_list(:organization, 10) }
