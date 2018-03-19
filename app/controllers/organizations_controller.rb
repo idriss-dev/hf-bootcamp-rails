@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
-  after_action :verify_authorized, except: [:index, :show]
-  before_action :set_organization, only: [:show, :update, :destroy]
+  after_action :verify_authorized, except: [:tree, :index, :show]
+  before_action :set_organization, only: [:tree, :show, :update, :destroy]
   before_action :authenticate_account
 
 =begin

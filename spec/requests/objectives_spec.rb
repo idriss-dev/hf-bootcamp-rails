@@ -22,6 +22,10 @@ describe "Objectives", type: :request do
     FactoryBot.create_list(:objective, 10)
   }
 
+  let(:objectives_tree) {
+    FactoryBot.create :objective, :tree
+  }
+
   let(:invalid_attributes) {
     FactoryBot.attributes_for(:objective).except(:name)
   }
@@ -73,6 +77,22 @@ describe "Objectives", type: :request do
       it { expect(response).to have_http_status(:ok) }
     end
   end
+
+  describe "GET /departments/:department_id/objectives/:id/tree" do
+    before(:each) do
+      get tree_department_objective_path(department.to_param, objectives_tree.to_param),
+        headers: auth_headers(account.to_param)
+    end
+
+    it "should return tree of organizations" do
+      organization_response = json_response
+      expect(organization_response.first[:children].count).to eql objectives_tree.children.count
+      expect(organization_response.first[:children].first[:children].count).to eql objectives_tree.children.first.children.count
+    end
+
+    it { expect(response).to have_http_status(:ok) }
+  end
+
 
   describe "POST objectives/:id/objectives" do
     context "with valid params" do

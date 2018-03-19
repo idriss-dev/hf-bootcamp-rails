@@ -15,4 +15,20 @@ FactoryBot.define do
   trait :child do
     parent_id 1
   end
+
+  trait :tree do
+    after(:create) do |objective|
+      children = create_list :objective, 3
+      children.each do |child|
+        child.parent = objective
+        child.save
+      end
+      new_parent = children.first
+      children = create_list :objective, 5
+      children.each do |child|
+        child.parent = new_parent
+        child.save
+      end
+    end
+  end
 end
