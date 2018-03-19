@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316102116) do
+ActiveRecord::Schema.define(version: 20180319094509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,9 @@ ActiveRecord::Schema.define(version: 20180316102116) do
     t.datetime "updated_at", null: false
     t.bigint "account_id"
     t.bigint "organization_id"
+    t.string "ancestry"
     t.index ["account_id"], name: "index_departments_on_account_id"
+    t.index ["ancestry"], name: "index_departments_on_ancestry"
     t.index ["organization_id"], name: "index_departments_on_organization_id"
   end
 
@@ -54,10 +56,13 @@ ActiveRecord::Schema.define(version: 20180316102116) do
     t.integer "priorities"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "objective_id"
-    t.integer "account_id"
-    t.jsonb "json_milestones", default: "{}"
+    t.bigint "account_id"
     t.bigint "department_id"
+    t.bigint "objective_id"
+    t.jsonb "json_milestones", default: "{}"
+    t.string "ancestry"
+    t.index ["account_id"], name: "index_objectives_on_account_id"
+    t.index ["ancestry"], name: "index_objectives_on_ancestry"
     t.index ["department_id"], name: "index_objectives_on_department_id"
     t.index ["objective_id"], name: "index_objectives_on_objective_id"
   end
@@ -67,7 +72,9 @@ ActiveRecord::Schema.define(version: 20180316102116) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id"
+    t.string "ancestry"
     t.index ["account_id"], name: "index_organizations_on_account_id"
+    t.index ["ancestry"], name: "index_organizations_on_ancestry"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -81,5 +88,4 @@ ActiveRecord::Schema.define(version: 20180316102116) do
   end
 
   add_foreign_key "departments", "organizations"
-  add_foreign_key "objectives", "departments"
 end

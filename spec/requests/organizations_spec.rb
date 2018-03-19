@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe "Organizations", type: :request do
+  # TODO update invalid_attributes to get data from the factoryBot
   let(:admin) { FactoryBot.create :account, :admin }
 
   let(:organization) { FactoryBot.create :organization }

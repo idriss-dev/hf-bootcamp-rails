@@ -1,6 +1,7 @@
 class ObjectivesController < ApplicationController
   before_action :authenticate_account
   before_action :set_objective, only: [:show, :update, :destroy]
+  before_action :set_objective_tree, only: [:tree]
   before_action :set_department, only: [:create]
 
 =begin
@@ -18,6 +19,10 @@ class ObjectivesController < ApplicationController
   def index
     @objectives = Objective.where(objective_search_params)
     render json: @objectives
+  end
+
+  def tree
+    render json: @objective_tree
   end
 
   # GET /objectives/1
@@ -104,6 +109,10 @@ class ObjectivesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_objective
       @objective = Objective.find(params[:id])
+    end
+
+    def set_objective_tree
+      @objective_tree = Objective.find(params[:id]).subtree.arrange_serializable
     end
 
     def set_department

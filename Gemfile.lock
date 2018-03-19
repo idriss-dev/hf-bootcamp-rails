@@ -45,6 +45,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    ancestry (3.0.1)
+      activerecord (>= 3.2.0)
     arel (8.0.0)
     bcrypt (3.1.11)
     builder (3.2.3)
@@ -187,6 +189,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
+  ancestry
   bcrypt (~> 3.1.7)
   byebug
   email_spec (~> 2.1.1)

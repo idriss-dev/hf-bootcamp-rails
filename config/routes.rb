@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   resources :organizations
 
   resources :departments do
-    resources :objectives
+    resources :objectives do
+      member do
+        get 'tree'
+      end
+    end
   end
 
   resources :accounts do
