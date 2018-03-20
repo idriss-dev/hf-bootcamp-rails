@@ -4,6 +4,8 @@ default: &default
   timeout: 5000
   username: javelo
   password: 'javelo'
+  host: db
+  port: 5432
 
 development:
   <<: *default

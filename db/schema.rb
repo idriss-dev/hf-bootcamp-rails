@@ -40,9 +40,7 @@ ActiveRecord::Schema.define(version: 20180319094509) do
     t.datetime "updated_at", null: false
     t.bigint "account_id"
     t.bigint "organization_id"
-    t.string "ancestry"
     t.index ["account_id"], name: "index_departments_on_account_id"
-    t.index ["ancestry"], name: "index_departments_on_ancestry"
     t.index ["organization_id"], name: "index_departments_on_organization_id"
   end
 
@@ -72,9 +70,7 @@ ActiveRecord::Schema.define(version: 20180319094509) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id"
-    t.string "ancestry"
     t.index ["account_id"], name: "index_organizations_on_account_id"
-    t.index ["ancestry"], name: "index_organizations_on_ancestry"
   end
 
   create_table "roles", force: :cascade do |t|
