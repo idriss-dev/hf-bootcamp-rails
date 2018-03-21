@@ -10,6 +10,13 @@ services:
       POSTGRES_DB: javelo
       POSTGRES_PASSWORD: 'javelo'
       POSTGRES_USER: javelo
+  test:
+    build: .
+    command: bash -c "rspec spec"
+    depends_on:
+      - "db"
+    links:
+      - "db:db"
   app:
     build: .
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
@@ -19,4 +26,6 @@ services:
       - "3000:3000"
       - 35729:35729 # livereload port
     depends_on:
-      - "db"
+      - "test"
+    links:
+      - "test:test"

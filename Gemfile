@@ -27,7 +27,6 @@ group :development, :test do
   gem 'shoulda-callback-matchers', '~> 1.1.1'
   gem 'pry-rails'
   gem 'email_spec', '~> 2.1.1'
-  gem "nyan-cat-formatter"
 end
 
 group :development do

@@ -23,4 +23,4 @@ create db
 `docker-compose exec app rails db:create`
 
 Migrate
-`docker-compose exec app rails db:create`
+`docker-compose exec app rails db:migrate`
